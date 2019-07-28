@@ -1,0 +1,116 @@
+%YAML 1.1
+---
+actions:
+- utter_greet
+- action_recipe
+- action_another_recipe
+- action_faster_recipe
+- action_healthier_recipe
+- action_ingredient
+- action_nutrient
+- action_health_label
+- action_caution
+- action_flavor
+- action_description
+- action_prep_time
+- action_cuisine
+- action_course
+- action_diet_label
+- action_step
+- action_next_step
+- action_previous_step
+- action_authenticate
+- action_rate_dish
+- action_recommendation_system
+- action_clear
+- action_repeat
+- utter_ask_rephrase
+- utter_goodbye
+entities:
+- ingredient
+- negative_ingredient
+- nutrient
+- health_label
+- caution
+- flavor
+- max_time
+- time_unit
+- time_done
+- cuisine
+- course
+- diet_label
+- user_id
+- rating
+- step_count
+- recommendation_system
+intents:
+- greet
+- get_recipe
+- get_another_recipe
+- get_faster_recipe
+- get_healthier_recipe
+- get_ingredient
+- get_nutrient
+- get_health_label
+- get_caution
+- get_flavor
+- get_description
+- get_prep_time
+- get_cuisine
+- get_course
+- get_diet_label
+- get_step
+- get_next_step
+- get_previous_step
+- authenticate
+- rate_dish
+- set_recommendation_system
+- clear
+- repeat_last
+- goodbye
+slots:
+  ingredient:
+    type: list
+  negative_ingredient:
+    type: list
+  nutrient:
+    type: list
+  health_label:
+    type: list
+  caution:
+    type: list
+  flavor:
+    type: list
+  max_time:
+    type: text
+  time_unit:
+    type: text
+  cuisine:
+    type: text
+  course:
+    type: text
+  diet_label:
+    type: list
+  step_count:
+    max_value: 100
+    min_value: 1
+    type: float
+  user_id:
+    type: text
+  rating:
+    max_value: 10
+    min_value: 1
+    type: float
+  recommendation_system:
+    type: text
+  response_text:
+    type: text
+templates:
+  utter_greet:
+    - text: 'Hello! How can I help you?'
+  utter_goodbye:
+    - text: 'Bye.'
+    - text: 'See you.'
+  utter_ask_rephrase:
+    - text: "I didn't understand that. Please repeat."
+    - text: 'Could you repeat that?'

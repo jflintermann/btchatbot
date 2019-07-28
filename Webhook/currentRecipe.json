@@ -1,0 +1,312 @@
+{
+  "preparation": [],
+  "categories": [
+    "Wok",
+    "Chicken",
+    "Ginger",
+    "Mushroom",
+    "Poultry",
+    "Side",
+    "Stir-Fry",
+    "Dinner",
+    "Lunar New Year",
+    "Family Reunion",
+    "Noodle",
+    "Dairy Free",
+    "Tree Nut Free",
+    "Kosher"
+  ],
+  "dietLabels": [
+    "BALANCED"
+  ],
+  "healthLabels": [
+    "SUGAR_CONSCIOUS",
+    "TREE_NUT_FREE"
+  ],
+  "cautions": [
+    "GLUTEN",
+    "WHEAT",
+    "SULFITES"
+  ],
+  "_id": "5c9bc9ca70f1b650f1c27cf6",
+  "dishID": 1219,
+  "name": "Chicken Lo Mein with Ginger Mushrooms ",
+  "time": 1500,
+  "description": "This recipe is extremely simple to make and has a nice peppery flavor from the red pepper flakes, white pepper, and ginger. There is a variety of fresh noodles in the refrigerator section of most Chinese food markets. The best noodles for lo mein are about 1/4 inch thick and are sold in 1-pound packages. If fresh shiitake mushrooms are not available, use button mushrooms. I will sometimes substitute bean sprouts for the Napa cabbage.",
+  "preperation": [
+    "1. In a 3-quart saucepan bring 2 quarts water to a boil over high heat. When the water comes to a rolling boil, add the noodles. Return to a rolling boil and boil according to package directions until al dente. Carefully pour the noodles into a colander and rinse several times with cold water. Drain the noodles, shaking well to remove excess water. Return the noodles to the unwashed pot, add the sesame oil, and toss until well combined. Set aside.",
+    "2. Put the chicken in a shallow bowl and add the ginger, 1 teaspoon of the rice wine, cornstarch, 1 tea- spoon of the soy sauce, 1/4 teaspoon of the salt, and pepper. In a small bowl combine the remaining 1 tablespoon rice wine and 1 tablespoon soy sauce.",
+    "3. Heat a 14-inch flat-bottomed wok over high heat until a bead of water vaporizes within 1 to 2 seconds of contact. Swirl in 1 tablespoon of the peanut oil, add the red pepper flakes, then, using a metal spatula, stir-fry 10 seconds or until the pepper flakes are fragrant. Push the pepper flakes to the sides of the wok, carefully add the chicken mixture and spread it evenly in one layer in the wok. Cook undisturbed 1 minute, letting the chicken begin to sear. Stir-fry 30 seconds or until the chicken begins to brown. Add the cabbage and mushrooms and stir-fry 1 minute or until the cabbage is just wilted but the chicken is not cooked through. Transfer the chicken and vegetables to a plate.",
+    "4. Swirl the remaining 1 tablespoon peanut oil into the wok. Add the noodles and stir-fry 15 seconds. Restir the soy sauce mixture, swirl it into the wok, add the scallions and chicken mixture, and sprinkle on the remaining 3/4 teaspoon salt. Stir-fry 1 to 2 minutes or until chicken is cooked through and noodles are heated through."
+  ],
+  "ingredients": [
+    {
+      "id": 518,
+      "key": "12 ounces fresh Chinese thick, round egg noodles",
+      "name": "egg noodles",
+      "quantity": 34.0194,
+      "unit": "g"
+    },
+    {
+      "id": 55,
+      "key": "2 teaspoons sesame oil",
+      "name": "sesame oil",
+      "quantity": 0.9,
+      "unit": "g"
+    },
+    {
+      "id": 1767,
+      "key": "12 ounces skinless, boneless chicken thigh, cut into 1/4-inch-thick bite-sized slices",
+      "name": "skinless boneless chicken thigh",
+      "quantity": 34.0194,
+      "unit": "g"
+    },
+    {
+      "id": 331,
+      "key": "1 tablespoon finely shredded ginger",
+      "name": "ginger",
+      "quantity": 0.6,
+      "unit": "g"
+    },
+    {
+      "id": 944,
+      "key": "1 teaspoon plus 1 tablespoon Shao Hsing rice wine or dry sherry",
+      "name": "rice wine",
+      "quantity": 1.975,
+      "unit": "g"
+    },
+    {
+      "id": 127,
+      "key": "1 teaspoon cornstarch",
+      "name": "cornstarch",
+      "quantity": 0.26,
+      "unit": "g"
+    },
+    {
+      "id": 54,
+      "key": "1 teaspoon plus 1 tablespoon soy sauce",
+      "name": "soy sauce",
+      "quantity": 2.13,
+      "unit": "g"
+    },
+    {
+      "id": 2,
+      "key": "1 teaspoon salt",
+      "name": "salt",
+      "quantity": 0.6,
+      "unit": "g"
+    },
+    {
+      "id": 616,
+      "key": "1/4 teaspoon ground white pepper",
+      "name": "ground white pepper",
+      "quantity": 0.06,
+      "unit": "g"
+    },
+    {
+      "id": 348,
+      "key": "2 tablespoons peanut or vegetable oil",
+      "name": "peanut oil",
+      "quantity": 2.8,
+      "unit": "g"
+    },
+    {
+      "id": 1556,
+      "key": "1/4 teaspoon red pepper flakes",
+      "name": "red pepper flakes",
+      "quantity": 0.045,
+      "unit": "g"
+    },
+    {
+      "id": 894,
+      "key": "3 cups thinly sliced Napa cabbage (about 5 ounces)",
+      "name": "napa cabbage",
+      "quantity": 14.1748,
+      "unit": "g"
+    },
+    {
+      "id": 499,
+      "key": "4 ounces fresh shiitake mushrooms, stems removed and caps thinly sliced (about 2 cups)",
+      "name": "fresh shiitake mushrooms",
+      "quantity": 13.2,
+      "unit": "g"
+    },
+    {
+      "id": 56,
+      "key": "1/2 cup finely shredded scallions",
+      "name": "scallions",
+      "quantity": 5,
+      "unit": "g"
+    }
+  ],
+  "nutrients": [
+    {
+      "ENERC_KCAL": {
+        "label": "Energy",
+        "quantity": 252.022956890658,
+        "unit": "kcal"
+      },
+      "FAT": {
+        "label": "Fat",
+        "quantity": 10.9894335645,
+        "unit": "g"
+      },
+      "FASAT": {
+        "label": "Saturated",
+        "quantity": 2.2606422444818746,
+        "unit": "g"
+      },
+      "FATRN": {
+        "label": "Trans",
+        "quantity": 0.07114436451500002,
+        "unit": "g"
+      },
+      "FAMS": {
+        "label": "Monounsaturated",
+        "quantity": 5.167946635514375,
+        "unit": "g"
+      },
+      "FAPU": {
+        "label": "Polyunsaturated",
+        "quantity": 2.514330914545,
+        "unit": "g"
+      },
+      "CHOCDF": {
+        "label": "Carbs",
+        "quantity": 26.517315028863738,
+        "unit": "g"
+      },
+      "FIBTG": {
+        "label": "Fiber",
+        "quantity": 1.783728731375,
+        "unit": "g"
+      },
+      "SUGAR": {
+        "label": "Sugars",
+        "quantity": 1.2608604281375002,
+        "unit": "g"
+      },
+      "PROCNT": {
+        "label": "Protein",
+        "quantity": 11.243459357137626,
+        "unit": "g"
+      },
+      "CHOLE": {
+        "label": "Cholesterol",
+        "quantity": 61.91535850500001,
+        "unit": "mg"
+      },
+      "NA": {
+        "label": "Sodium",
+        "quantity": 253.90431780655976,
+        "unit": "mg"
+      },
+      "CA": {
+        "label": "Calcium",
+        "quantity": 34.220362728612,
+        "unit": "mg"
+      },
+      "MG": {
+        "label": "Magnesium",
+        "quantity": 34.27321367991755,
+        "unit": "mg"
+      },
+      "K": {
+        "label": "Potassium",
+        "quantity": 255.28133660183477,
+        "unit": "mg"
+      },
+      "FE": {
+        "label": "Iron",
+        "quantity": 1.8875807386785788,
+        "unit": "mg"
+      },
+      "ZN": {
+        "label": "Zinc",
+        "quantity": 1.2975660670478626,
+        "unit": "mg"
+      },
+      "P": {
+        "label": "Phosphorus",
+        "quantity": 161.4055342231265,
+        "unit": "mg"
+      },
+      "VITA_RAE": {
+        "label": "Vitamin A",
+        "quantity": 48.65393938437499,
+        "unit": "µg"
+      },
+      "VITC": {
+        "label": "Vitamin C",
+        "quantity": 7.395622703125001,
+        "unit": "mg"
+      },
+      "THIA": {
+        "label": "Thiamin (B1)",
+        "quantity": 0.42168790329000005,
+        "unit": "mg"
+      },
+      "RIBF": {
+        "label": "Riboflavin (B2)",
+        "quantity": 0.24102491554625,
+        "unit": "mg"
+      },
+      "NIA": {
+        "label": "Niacin (B3)",
+        "quantity": 5.090813196642502,
+        "unit": "mg"
+      },
+      "VITB6A": {
+        "label": "Vitamin B6",
+        "quantity": 0.26602931566375,
+        "unit": "mg"
+      },
+      "FOLDFE": {
+        "label": "Folate equivalent (total)",
+        "quantity": 141.58170813875003,
+        "unit": "µg"
+      },
+      "FOLFD": {
+        "label": "Folate (food)",
+        "quantity": 25.57545951125,
+        "unit": "µg"
+      },
+      "FOLAC": {
+        "label": "Folic acid",
+        "quantity": 68.3790497775,
+        "unit": "µg"
+      },
+      "VITB12": {
+        "label": "Vitamin B12",
+        "quantity": 0.30957679252500003,
+        "unit": "µg"
+      },
+      "VITD": {
+        "label": "Vitamin D",
+        "quantity": 0.188877711,
+        "unit": "µg"
+      },
+      "TOCPHA": {
+        "label": "Vitamin E",
+        "quantity": 0.8755534663562502,
+        "unit": "mg"
+      },
+      "VITK1": {
+        "label": "Vitamin K",
+        "quantity": 17.843156632437502,
+        "unit": "µg"
+      }
+    }
+  ],
+  "totalWeight": 109.41800636663197,
+  "flavors": {
+    "piquant": 0.16666666666666666,
+    "meaty": 0.3333333333333333,
+    "bitter": 0.5,
+    "sweet": 0.16666666666666666,
+    "sour": 0.5,
+    "salty": 0.5
+  },
+  "rating": 4,
+  "course": "Main Dishes"
+}

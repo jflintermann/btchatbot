@@ -1,0 +1,333 @@
+diffe
+Artichoke
+Arugula
+Asparagus
+Avocado
+Bamboo Shoots
+Bean Sprouts
+Beans
+Beet
+Belgian Endive
+Bell Pepper
+Bitter Melon
+Bitter Gourd
+Bok Choy
+Bok Choi
+Pak Choy
+Broccoli
+Brussels Sprouts
+Burdock Root
+Gobo
+Cabbage
+Calabash
+Capers
+Carrot
+Cassava
+Yuca
+Cauliflower
+Celery
+Celery Root
+Celeriac
+Celtuce
+Chayote
+Chinese Broccoli
+Kai-lan
+Corn
+Cucumber
+Daikon Radish
+Edamame
+Eggplant
+Aubergine
+Elephant Garlic
+Endive
+Escarole
+Fennel
+Fiddlehead
+Galangal
+Garlic
+Ginger
+Grape Leaves
+Green Beans
+String Beans
+Snap Beans
+Wax Beans
+Greens
+Amaranth Leaves
+Chinese Spinach
+Beet Greens
+Collard Greens
+Dandelion Greens
+Kale
+Kohlrabi Greens
+Mustard Greens
+Rapini
+Spinach
+Swiss Chard
+Turnip Greens
+Hearts of Palm
+Horseradish
+Jerusalem Artichoke
+Jícama
+Kale
+Curly
+Lacinato
+Ornamental
+Kohlrabi
+Leeks
+Lemongrass
+Lettuce
+Butterhead
+Iceberg
+Romaine
+Lotus Root
+Lotus Seed
+Mushrooms
+Napa Cabbage
+Nopales
+Okra
+Olive
+Onion
+Green Onions
+Scallions
+Parsley
+Parsley Root
+Parsnip
+Peas
+green peas
+snow peas
+sugar snap peas
+Peppers
+Plantain
+Potato
+Pumpkin
+Purslane
+Radicchio
+Radish
+Rutabaga
+Sea Vegetables
+Shallots
+Spinach
+Squash
+Sweet Potato
+Swiss Chard
+Taro
+Tomatillo
+Tomato
+Turnip
+Water Chestnut
+Water Spinach
+Watercress
+Winter Melon
+Yams
+Zucchini
+Apple
+Apricot
+Avocado
+Banana
+Berries
+Breadfruit
+Carob
+Cherry
+Citron
+Coconut
+Date
+Dragon Fruit
+Pitaya
+Durian
+Fig
+Ginger
+Grapes
+Currant
+Raisin
+Grapefruit
+Guava
+Jackfruit
+Jujube
+Kiwifruit
+Kumquat
+Lemon
+Lime
+Longan
+Loquat
+Lucuma
+Lychee
+Mamey Sapote
+Mango
+Mangosteen
+Melon
+Nance
+Nectarine
+Noni
+Oranges
+Blood Orange
+Mandarin
+Satsuma
+Navel
+Seville
+Valencia
+Papaya
+Passion Fruit
+Peach
+Pear
+Asian Pear
+Persimmon
+Pineapple
+Plantain
+Plum
+Damson
+Prunes
+Pomegranate
+Pomelo
+Prickly Pear
+Cactus Pear
+Quince
+Rambutan
+Rhubarb
+Starfruit
+Tamarillo
+Tamarind
+Tangerine
+Tangelo
+Tomato
+Amaranth
+Barley
+Hulled Barley
+Barley Groats
+Pot
+Scotch Barley
+Pearl
+Pearled Barley
+Barley Flakes
+Barley Grits
+Buckwheat
+Buckwheat Groats
+Unroasted Buckwheat
+Kasha
+Roasted Buckwheat
+Buckwheat Grits
+Corn
+Hominy
+Popcorn
+Millet
+Oats
+Oat Groats
+Rolled Oats
+Old Fashioned Oatmeal
+Steel cut oats
+Irish Oatmeal
+Quick Cooking Oats
+Quick Oatmeal
+Instant Oats
+Instant Oatmeal
+Oat Bran
+Quinoa
+Rice
+Rye
+Rye Berries
+Cracked Rye
+Rye Flakes
+Sorghum
+Spelt
+Spelt Berries
+Spelt Flakes
+Teff
+Triticale
+Triticale Berries
+Triticale Flakes
+Wheat
+Wheat Berries
+Bulgur Wheat
+Cracked Wheat
+Farina
+Semolina
+Pasta
+Couscous
+Wheat Bran
+Wheat Flakes
+Seitan
+Wheat Gluten
+Farro
+Kamut
+Durum Wheat
+Wild Rice
+Acai Berry
+Barberry
+Bilberry
+Blackberry
+Blackcurrant
+Blueberry
+Boysenberry
+Cloudberry
+Cranberry
+Elderberry
+Goji berry
+Gooseberry
+Huckleberry
+Lingonberry
+Loganberry
+Marionberry
+Mulberry
+Raspberry
+Redcurrant
+Salmonberry
+Sea buckthorn Berry
+Serviceberry
+Strawberry
+Salt
+Red chili flakes
+Black peppercorns
+Coriander
+Fennel seeds
+Paprika
+Oregano
+Turmeric
+Whole nutmeg
+Bay leaves
+Cayenne pepper
+Thyme
+Cinnamon
+Sugar
+Panko bread crumbs
+Pasta
+Couscous
+Rice
+All-purpose flour
+White sugar
+Brown sugar
+Powdered sugar
+Baking powder
+Active dry yeast
+Chicken stock
+Beef stock
+Milk
+Butter
+Heavy cream
+Eggs
+Parmesan
+Bacon
+Parsley
+Celery
+Carrots
+Lemons
+Limes
+Orange juice
+Ketchup
+Mayonnaise
+Extra virgin olive oil
+vegetable oil
+Canola
+olive oil
+Vinegar
+Mustard
+Honey
+Garlic
+Shallots
+Potatoes
+Onions 
+Tomatoes
+Cheese
+Chicken
+Turkey
+Beef 
+Pork
+Eggs
