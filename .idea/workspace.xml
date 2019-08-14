@@ -2,8 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2575bf63-f86d-4c54-a403-78fcf0831c9e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/RecommenderSystems/Gerichte-vorschlagen/SourceCode/machine_learning/tempDishes1.json" beforeDir="false" afterPath="$PROJECT_DIR$/RecommenderSystems/Gerichte-vorschlagen/SourceCode/machine_learning/tempDishes1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RecommenderSystems/Gerichte-vorschlagen/SourceCode/machine_learning/tempDishes2.json" beforeDir="false" afterPath="$PROJECT_DIR$/RecommenderSystems/Gerichte-vorschlagen/SourceCode/machine_learning/tempDishes2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chatbot/actions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Chatbot/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/data/data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/data/nlu.md" beforeDir="false" afterPath="$PROJECT_DIR$/Chatbot/data/nlu.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/data/remove_bom.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/data/stories.md" beforeDir="false" afterPath="$PROJECT_DIR$/Chatbot/data/stories.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/domain.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Chatbot/domain.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/models/20190726-155839.tar.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chatbot/rasa.db" beforeDir="false" afterPath="$PROJECT_DIR$/Chatbot/rasa.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Webhook/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/Webhook/users.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Webhook/webhook.js" beforeDir="false" afterPath="$PROJECT_DIR$/Webhook/webhook.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,17 +32,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Webhook/webhook.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="207" column="88" selection-start-line="207" selection-start-column="88" selection-end-line="207" selection-end-column="88" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Webhook/recipes_old.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+            <state relative-caret-position="386">
+              <caret line="576" column="60" lean-forward="true" selection-start-line="576" selection-start-column="60" selection-end-line="576" selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -37,8 +41,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Chatbot/actions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="604">
-              <caret line="138" column="46" lean-forward="true" selection-start-line="138" selection-start-column="46" selection-end-line="138" selection-end-column="46" />
+            <state relative-caret-position="-2160">
+              <caret line="264" column="29" selection-start-line="264" selection-start-column="29" selection-end-line="264" selection-end-column="29" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -47,10 +51,39 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Chatbot/config.yml">
+        <entry file="file://$PROJECT_DIR$/Chatbot/domain.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+            <state relative-caret-position="1242">
+              <caret line="69" column="10" selection-start-line="69" selection-start-column="10" selection-end-line="69" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Chatbot/data/nlu.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="738">
+                <caret line="41" selection-start-line="41" selection-end-line="41" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Chatbot/data/lookup_table/user.txt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Chatbot/data/stories.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="2106">
+                <caret line="117" column="20" selection-start-line="117" selection-start-column="20" selection-end-line="117" selection-end-column="20" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -58,8 +91,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Webhook/currentRecipe.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+            <state relative-caret-position="343">
+              <caret line="32" column="49" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Webhook/users.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="77" selection-start-column="77" selection-end-column="77" />
             </state>
           </provider>
         </entry>
@@ -75,49 +117,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>punctuation</find>
-      <find>flavors</find>
-      <find>reqFlavorArray</find>
-      <find>reqFlavor</find>
-      <find>excludedIngredients</find>
-      <find>ingredients</find>
-      <find>ener</find>
-      <find>;</find>
-      <find>ing</find>
-      <find>&quot;) {</find>
-      <find>case</find>
-      <find>'</find>
-      <find>I</find>
-      <find>anything that fits</find>
-      <find>couldn't</find>
-      <find>=&gt;</find>
-      <find>flavorArray</find>
-      <find>dietLabel</find>
-      <find>dietArray</find>
-      <find>flavor</find>
-      <find>req.body.healthLabels</find>
-      <find>currentRecipe.healthLabels</find>
-      <find>caution</find>
-      <find>nutrient</find>
-      <find>ingredientArray</find>
-      <find>recipe</find>
-      <find>recipe</find>
       <find>text</find>
       <find>'event': 'bot'</find>
       <find>'event':</find>
+      <find>SlotSet</find>
+      <find>recipe_question</find>
+      <find>recipe</find>
+      <find>step</find>
+      <find>question_start</find>
+      <find>fallback&quot;:</find>
+      <find>cust</find>
+      <find>ask_</find>
+      <find>&quot;fallback&quot;</find>
+      <find>use</find>
+      <find>flag_set</find>
+      <find>get_step</find>
+      <find>To be</find>
+      <find>user answer</find>
+      <find>rate</find>
+      <find>rate_dish</find>
+      <find>bye</find>
+      <find>&quot;intent&quot;: &quot;bye&quot;</find>
+      <find>clear</find>
+      <find>implem</find>
+      <find>requestHeader</find>
+      <find>user.userID</find>
+      <find>users[index]</find>
+      <find>consol</find>
+      <find>currentRecipe.name</find>
+      <find>&quot;${currentRecipe.name}</find>
+      <find>${currentRecipe.name}</find>
     </findStrings>
     <replaceStrings>
-      <replace>currentURL = currentURL.concat</replace>
-      <replace>flavorString</replace>
-      <replace>reqFlavorArray</replace>
-      <replace>responseString</replace>
-      <replace>punctuation</replace>
-      <replace>switch</replace>
-      <replace>and</replace>
-      <replace>flavor</replace>
-      <replace>ingredients</replace>
-      <replace>dietLabels</replace>
-      <replace>label</replace>
       <replace>case</replace>
       <replace>&quot;:</replace>
       <replace>Caution</replace>
@@ -137,10 +168,21 @@
       <replace>cautionArray</replace>
       <replace>dietArray</replace>
       <replace>flavorArray</replace>
+      <replace>question_recipe</replace>
+      <replace>ask_start</replace>
+      <replace>start_question</replace>
+      <replace>&quot;fallback_flag&quot;</replace>
+      <replace>set_flag</replace>
+      <replace>&quot;intent&quot;: &quot;goodbye&quot;</replace>
+      <replace>currentHeader</replace>
+      <replace>users[index]</replace>
+      <replace>users[index].userID</replace>
+      <replace>&quot;${currentRecipe.name}</replace>
+      <replace>&quot;${currentRecipe.name}&quot;</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/RecommenderSystems" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -158,14 +200,24 @@
         <option value="$PROJECT_DIR$/test/tracker.py" />
         <option value="$PROJECT_DIR$/test/domain.yml" />
         <option value="$PROJECT_DIR$/test/actions.py" />
+        <option value="$PROJECT_DIR$/Chatbot/data/tracker_data.py" />
+        <option value="$PROJECT_DIR$/Chatbot/data/tracker_data" />
+        <option value="$PROJECT_DIR$/Chatbot/config.yml" />
+        <option value="$PROJECT_DIR$/Chatbot/data/data.json" />
+        <option value="$PROJECT_DIR$/Chatbot/domain.yml" />
+        <option value="$PROJECT_DIR$/Chatbot/data/stories.md" />
+        <option value="$PROJECT_DIR$/Chatbot/actions.py" />
+        <option value="$PROJECT_DIR$/Chatbot/data/nlu.md" />
+        <option value="$PROJECT_DIR$/Webhook/users.json" />
+        <option value="$PROJECT_DIR$/Webhook/webhook.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="993" />
-    <option name="y" value="25" />
-    <option name="width" value="927" />
-    <option name="height" value="1055" />
+    <option name="x" value="2144" />
+    <option name="y" value="74" />
+    <option name="width" value="1440" />
+    <option name="height" value="810" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -189,6 +241,19 @@
             <path>
               <item name="Intellioven" type="b2602c69:ProjectViewProjectNode" />
               <item name="Intellioven" type="462c0819:PsiDirectoryNode" />
+              <item name="Chatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Intellioven" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Intellioven" type="462c0819:PsiDirectoryNode" />
+              <item name="Chatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="lookup_table" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Intellioven" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Intellioven" type="462c0819:PsiDirectoryNode" />
               <item name="Webhook" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -198,6 +263,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Chatbot/data/lookup_table" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
@@ -235,10 +301,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
+    <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14863388" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10701107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.3295082" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -256,32 +321,42 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10701107" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" weight="0.3295082" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.23110151" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.3297414" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.local/lib/python3.6/site-packages/rasa_sdk/interfaces.py</url>
+          <line>174</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/rasa_sdk/interfaces.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Chatbot/data/stories.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="90">
-            <caret line="6" selection-start-line="6" selection-end-line="6" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Webhook/recipe_new.js" />
-    <entry file="file://$PROJECT_DIR$/Chatbot/data/data.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Chatbot/data/data_new.json" />
     <entry file="file://$PROJECT_DIR$/Chatbot/data/lookup_table/ingredients.txt" />
     <entry file="file://$PROJECT_DIR$/Chatbot/data/lookup_table/diet.txt" />
@@ -289,103 +364,95 @@
     <entry file="file://$PROJECT_DIR$/Chatbot/actions_new.py" />
     <entry file="file://$PROJECT_DIR$/Chatbot/domain_new.yml" />
     <entry file="file://$PROJECT_DIR$/Chatbot/data/stories_new.md" />
-    <entry file="file://$PROJECT_DIR$/Webhook/recipes.js">
+    <entry file="file://$PROJECT_DIR$/Webhook/recipes.js" />
+    <entry file="file://$PROJECT_DIR$/test/tracker" />
+    <entry file="file://$PROJECT_DIR$/test/tracker.py" />
+    <entry file="file://$PROJECT_DIR$/Webhook/recipes_new.js" />
+    <entry file="file://$PROJECT_DIR$/test/config.yml" />
+    <entry file="file://$PROJECT_DIR$/test/domain.yml" />
+    <entry file="file://$PROJECT_DIR$/test/data/stories.md" />
+    <entry file="file://$PROJECT_DIR$/test/actions.py" />
+    <entry file="file://$PROJECT_DIR$/Webhook/recipes_old.js" />
+    <entry file="file://$PROJECT_DIR$/Chatbot/data/tracker_data" />
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/rasa_sdk/interfaces.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="464" column="42" selection-start-line="464" selection-start-column="42" selection-end-line="464" selection-end-column="42" />
+        <state relative-caret-position="308">
+          <caret line="176" column="8" selection-start-line="176" selection-start-column="8" selection-end-line="176" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/tracker">
+    <entry file="file://$PROJECT_DIR$/Chatbot/tracker.db">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Chatbot/rasa.db">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Chatbot/data/data.json" />
+    <entry file="file://$PROJECT_DIR$/Chatbot/config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="162">
+          <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/tracker.py">
+    <entry file="file://$PROJECT_DIR$/Chatbot/domain.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-43">
-          <caret line="90" column="47" selection-start-line="90" selection-start-column="38" selection-end-line="90" selection-end-column="47" />
+        <state relative-caret-position="1242">
+          <caret line="69" column="10" selection-start-line="69" selection-start-column="10" selection-end-line="69" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Webhook/recipes_new.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="8" lean-forward="true" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/domain.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="13" lean-forward="true" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/data/stories.md">
+    <entry file="file://$PROJECT_DIR$/Chatbot/data/nlu.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="576">
-            <caret line="32" column="17" lean-forward="true" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+          <first_editor relative-caret-position="738">
+            <caret line="41" selection-start-line="41" selection-end-line="41" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/actions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1512">
-          <caret line="12" column="27" lean-forward="true" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/Chatbot/data/lookup_table/user.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Chatbot/data/stories.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="2106">
+            <caret line="117" column="20" selection-start-line="117" selection-start-column="20" selection-end-line="117" selection-end-column="20" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Webhook/currentRecipe.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        <state relative-caret-position="343">
+          <caret line="32" column="49" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Chatbot/actions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="604">
-          <caret line="138" column="46" lean-forward="true" selection-start-line="138" selection-start-column="46" selection-end-line="138" selection-end-column="46" />
+        <state relative-caret-position="-2160">
+          <caret line="264" column="29" selection-start-line="264" selection-start-column="29" selection-end-line="264" selection-end-column="29" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Chatbot/config.yml">
+    <entry file="file://$PROJECT_DIR$/Webhook/users.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Webhook/recipes_old.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+        <state>
+          <caret column="77" selection-start-column="77" selection-end-column="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Webhook/webhook.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="207" column="88" selection-start-line="207" selection-start-column="88" selection-end-line="207" selection-end-column="88" />
+        <state relative-caret-position="386">
+          <caret line="576" column="60" lean-forward="true" selection-start-line="576" selection-start-column="60" selection-end-line="576" selection-end-column="60" />
         </state>
       </provider>
     </entry>

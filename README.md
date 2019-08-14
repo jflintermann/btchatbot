@@ -2,9 +2,9 @@ Installation
 	TODO
 
 Startup
-1. If changes were made, train Rasa in /Chatbot
+1. If changes were made to training data(/Chatbot/data/nlu.md) or stories (/Chatbot/data/stories.md), train Rasa in /Chatbot
 	$rasa train
-2. Run Rasa core server in /Chatbot
+2. Run Rasa Core server in /Chatbot, for testing purposes use rasa shell
 	$rasa run
 	$rasa shell
 3. Run Rasa Action server in /Chatbot

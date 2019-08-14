@@ -2,10 +2,11 @@
 ---
 actions:
 - utter_greet
+- utter_ask_rephrase
+- utter_goodbye
 - action_recipe
 - action_another_recipe
 - action_faster_recipe
-- action_healthier_recipe
 - action_ingredient
 - action_nutrient
 - action_health_label
@@ -19,13 +20,15 @@ actions:
 - action_step
 - action_next_step
 - action_previous_step
+- action_register
 - action_authenticate
+- action_log_out
 - action_rate_dish
 - action_recommendation_system
 - action_clear
 - action_repeat
-- utter_ask_rephrase
-- utter_goodbye
+- action_fallback_question
+- action_fallback
 entities:
 - ingredient
 - negative_ingredient
@@ -45,10 +48,12 @@ entities:
 - recommendation_system
 intents:
 - greet
+- goodbye
+- affirm
+- deny
 - get_recipe
 - get_another_recipe
 - get_faster_recipe
-- get_healthier_recipe
 - get_ingredient
 - get_nutrient
 - get_health_label
@@ -62,12 +67,13 @@ intents:
 - get_step
 - get_next_step
 - get_previous_step
+- register
 - authenticate
+- log_out
 - rate_dish
 - set_recommendation_system
 - clear
 - repeat_last
-- goodbye
 slots:
   ingredient:
     type: list
@@ -103,14 +109,12 @@ slots:
     type: float
   recommendation_system:
     type: text
-  response_text:
+  fallback_flag:
     type: text
 templates:
   utter_greet:
-    - text: 'Hello! How can I help you?'
-  utter_goodbye:
-    - text: 'Bye.'
-    - text: 'See you.'
+    - text: "Hello! How can I help you?"
   utter_ask_rephrase:
-    - text: "I didn't understand that. Please repeat."
-    - text: 'Could you repeat that?'
+    - text: "Please rephrase your request."
+  utter_goodbye:
+    - text: "Bye."

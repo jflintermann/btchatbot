@@ -4,19 +4,16 @@ const app = express()
 const fs = require("fs")
 const path = require("path")
 
-//may add more recommendation systems here and in line 33
+//may add more recommendation systems here and in line 31
 let recommendationSystem = "content based"
 let contentBasedURL = "http://localhost:3001/dishes/getBy?"
 let collaborativeURL = "http://localhost:1112/dishes/getBy/?"
+let currentHeader
 let currentURL
-let user
+let currentUserID
 let recipes
+let currentRecipe = JSON.parse(fs.readFileSync(path.join(__dirname, "currentRecipe.json"))) //just for testing
 let currentStep = 0
-let lastRecipe = fs.readFileSync(path.join(__dirname, "currentRecipe.json"))
-let currentRecipe = JSON.parse(lastRecipe)
-let requestHeader = {
-    headers: {}
-}
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -30,6 +27,19 @@ app.post("/recipes",function (req, res, next) {
                     currentURL = collaborativeURL
                 else
                     currentURL = contentBasedURL
+                if (currentUserID != null) {
+                    currentHeader = {
+                        headers: {
+                            user: currentUserID,
+                            recommendation: true
+                        }
+                    }
+                    currentURL = currentURL.concat(`userID=${currentUserID}`)
+                } else {
+                    currentHeader = {
+                        headers: {}
+                    }
+                }
                 if ("ingredient" in req.body) {
                     let ingredients = req.body.ingredient
                     if (Array.isArray(ingredients)) {
@@ -45,6 +55,8 @@ app.post("/recipes",function (req, res, next) {
                         })
                         ingredients = tmp
                     }
+                    if (currentURL.substr(currentURL.length - 1) != "?")
+                        currentURL = currentURL.concat("&")
                     currentURL = currentURL.concat(`allowedIngredients=${ingredients}`)
                 }
                 if ("negativeIngredient" in req.body) {
@@ -119,8 +131,8 @@ app.post("/recipes",function (req, res, next) {
                     if (currentURL.substr(currentURL.length - 1) != "?") currentURL = currentURL.concat("&")
                     currentURL = currentURL.concat(`allowedCourses=${course}`)
                 }
-                console.log(currentURL)                                                                                 //DEBUG
-                axios.get(currentURL, requestHeader)
+                console.log(currentHeader, currentURL)                                                                  //DEBUG
+                axios.get(currentURL, currentHeader)
                     .then(response => {
                         recipes = response.data
                         if (recipes.length == 0) {
@@ -132,12 +144,10 @@ app.post("/recipes",function (req, res, next) {
                             } catch (e) {
                                 //recipes don't need to be parsed
                             }
-                            if ("flavor" in req.body) {
-                                //TODO
-                            }
                             currentRecipe = getRandomRecipe(recipes)
                             fs.writeFileSync(path.join(__dirname, "currentRecipe.json"), JSON.stringify(currentRecipe))
-                            res.send(`How about ${currentRecipe.name}?`)
+                            logRecipe()
+                            res.send(`How about "${currentRecipe.name}"?`)
                         }
 
                     }).catch (e => {
@@ -146,33 +156,35 @@ app.post("/recipes",function (req, res, next) {
                     })
                 break
             case "getSuggestion":
+                res.send("To be implemented")
                 break
             case "getAnotherRecipe":
                 if (recipes == null)
-                    res.send("Sorry, I didn't find a fitting recipe.")
-                else
-                    recipes.filter(recipe => recipe == currentRecipe)
+                    res.send("Sorry, I didn't find another fitting recipe.")
+                else {
+                    recipes.filter(recipe => recipe != currentRecipe)
                     currentRecipe = getRandomRecipe(recipes)
-                if (currentRecipe == null)
-                    res.send("Sorry, I didn't find a fitting recipe.")
-                else
-                    res.send(`How about ${currentRecipe.name}?`)
+                    if (currentRecipe == null)
+                        res.send("Sorry, I didn't find another fitting recipe.")
+                    else {
+                        logRecipe()
+                        res.send(`How about "${currentRecipe.name}"?`)
+                    }
+                }
                 break
             case "getFasterRecipe":
                 if (recipes == null)
-                    res.send("Sorry, I didn't find a fitting recipe.")
-                else
-                    recipes.filter(recipe => recipe == currentRecipe)
-                    for (recipe in recipes) {
-                        if (recipe.time < currentRecipe.time)
-                            currentRecipe = recipe
+                    res.send("Sorry, I didn't find a faster recipe.")
+                else {
+                    recipes.filter(recipe => recipe != currentRecipe || recipe.time < currentRecipe.time)
+                    currentRecipe = getRandomRecipe(recipes)
+                    if (currentRecipe == null)
+                        res.send("Sorry, I didn't find a faster recipe.")
+                    else {
+                        logRecipe()
+                        res.send(`How about "${currentRecipe.name}"? It takes ${currentRecipe.time} minutes.`)
                     }
-                if (currentRecipe == null)
-                    res.send("Sorry, I didn't find a fitting recipe.")
-                else
-                    res.send(`How about ${currentRecipe.name}? It takes ${currentRecipe.time} minutes.`)
-                break
-            case "getHealthierRecipe":
+                }
                 break
             case "getIngredient":
                 if (currentRecipe == null) {
@@ -427,8 +439,8 @@ app.post("/recipes",function (req, res, next) {
                 if (currentRecipe == null)
                     res.send("There is no current recipe.")
                 else {
+                    responseString = ""
                     if ("stepCount" in req.body) {
-                        console.log(currentRecipe.preperation.length)
                         if (req.body.stepCount < 1 || req.body.stepCount > currentRecipe.preperation.length) {
                             responseString = `This recipe only has ${currentRecipe.preperation.length} steps.`
                         } else {
@@ -445,6 +457,7 @@ app.post("/recipes",function (req, res, next) {
                 if (currentRecipe == null)
                     res.send("There is no current recipe.")
                 else {
+                    responseString = ""
                     if (currentStep+1 < currentRecipe.preperation.length) {
                         currentStep++
                         responseString = currentRecipe.preperation[currentStep]
@@ -458,6 +471,7 @@ app.post("/recipes",function (req, res, next) {
                 if (currentRecipe == null)
                     res.send("There is no current recipe.")
                 else {
+                    responseString = ""
                     if (currentStep-1 >= 0) {
                         currentStep--
                         responseString = currentRecipe.preperation[currentStep]
@@ -467,31 +481,166 @@ app.post("/recipes",function (req, res, next) {
                     res.send(responseString)
                 }
                 break
+            case "register":
+                responseString = ""
+                if ("userID" in req.body) {
+                    let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
+                    for (index in users) {
+                        if (req.body.userID.toLowerCase() == users[index].userID.toLowerCase()) {
+                            currentUserID = users[index].userID
+                            responseString = `User already exists. Switched to user profile ${users[index].userID}.`
+                        }
+                    }
+                    if (responseString == "") {
+                        users.push({
+                            "userID": req.body.userID,
+                            "dishLog": [],
+                            "ratings": []
+                        })
+                        fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
+                        currentUserID = req.body.userID
+                        logRecipe()
+                        responseString = `Created and switched to user profile ${req.body.userID}.`
+                    }
+                } else {
+                    responseString = "Please choose a username to register."
+                }
+                res.send(responseString)
+                break
             case "authenticate":
+                responseString = ""
+                if ("userID" in req.body) {
+                    let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
+                    for (index in users) {
+                        if (req.body.userID.toLowerCase() == users[index].userID.toLowerCase()) {
+                            currentUserID = users[index].userID
+                            responseString = `Switched to user profile ${users[index].userID}.`
+                        }
+                    }
+                    if (responseString == "") {
+                        responseString = `User ${req.body.userID} not found.`
+                    }
+                } else {
+                    responseString = "Please give a username to authenticate."
+                }
+                res.send(responseString)
+                break
+            case "log_out":
+                currentUserID = null
+                res.send("Switched to default user profile.")
                 break
             case "rateDish":
+                responseString = ""
+                if (currentUserID == null)
+                    res.send("Please authenticate yourself first.")
+                else {
+                    if ("rating" in req.body) {
+                        let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
+                        let userIndex = users.findIndex(user => user.userID == currentUserID)
+                        let ratingIndex = users[userIndex].ratings.findIndex(rating => rating.dishID == currentRecipe.dishID)
+                        // add new rating to user profile
+                        if (ratingIndex == -1) {
+                            currentHeader = {
+                                headers: {
+                                    user: currentUserID,
+                                    rating: req.body.rating
+                                    }
+                            }
+                            if (recommendationSystem == "collaborative")
+                                currentURL = collaborativeURL
+                            else
+                                currentURL = contentBasedURL
+                            currentURL = currentURL.concat(`dishId=${currentRecipe.dishID}`)
+                            console.log(currentHeader, currentURL)                                                      //DEBUG
+                            axios.get(currentURL, currentHeader)
+                                .then(response => {
+                                    users[userIndex].ratings.push({
+                                        "dishID": currentRecipe.dishID,
+                                        "rating": req.body.rating,
+                                        "time": new Date().getTime()
+                                    })
+                                    fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
+                                    res.send(`Rated "${currentRecipe.name}" as ${req.body.rating} out of 10.`)
+                                }).catch(e => {
+                                    //console.log(e)                                                                    //DEBUG
+                                    res.send("Could not connect to database.")
+                                })
+                        } else {
+                            oldRating = users[userIndex].ratings[ratingIndex].rating
+                            // if old rating didn't change
+                            if (oldRating == req.body.rating)
+                                res.send(`You have already rated "${currentRecipe.name}" as ${req.body.rating} out of 10.`)
+                            // adjust old rating if it changed
+                            else {
+                                currentHeader = {
+                                    headers: {
+                                        user: currentUserID,
+                                        rating: req.body.rating
+                                        }
+                                }
+                                if (recommendationSystem == "collaborative")
+                                    currentURL = collaborativeURL
+                                else
+                                    currentURL = contentBasedURL
+                                currentURL = currentURL.concat(`dishId=${currentRecipe.dishID}`)
+                                console.log(currentHeader, currentURL)                                                  //DEBUG
+                                axios.get(currentURL, currentHeader)
+                                    .then(response => {
+                                        users[userIndex].ratings[ratingIndex] = {
+                                        "dishID": currentRecipe.dishID,
+                                        "rating": req.body.rating,
+                                        "time": new Date().getTime()
+                                        }
+                                        fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
+                                        res.send(`Adjusted rating for "${currentRecipe.name}" from ${oldRating} to ${req.body.rating} out of 10.`)
+                                    }).catch(e => {
+                                        //console.log(e)                                                                //DEBUG
+                                        res.send("Could not connect to database.")
+                                    })
+                            }
+                        }
+                    } else {
+                        res.send("Please choose a rating for this dish.")
+                    }
+                }
                 break
             case "setRecommendationSystem":
                 recommendationSystem = req.body.recommendationSystem
                 res.send(`Recommendation system is set to ${recommendationSystem}.`)
                 break
             case "clear":
-                currentURL = contentBasedURL
-                user = ""
-                currentRecipe = ""
-                recipes = ""
-                currentStep = ""
-                requestHeader = {
-                    headers: {}
-                }
+                currentRecipe = null
+                recipes = null
+                currentStep = 0
                 res.send("Recipe has been reset.")
                 break
+            case "checkRecipe":
+                if (currentRecipe == null)
+                    res.send("false")
+                else
+                    res.send("true")
+                break
+            case "checkStep":
+                if (currentStep+1 == currentRecipe.preperation.length)
+                    res.send("true")
+                else
+                    res.send("false")
+                break
+            case "checkRating":
+                let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
+                let userIndex = users.findIndex(user => user.userID == currentUserID)
+                if (users[userIndex].ratings.find(rating => rating.dishID == currentRecipe.dishID) == null)
+                    res.send("false")
+                else
+                    res.send("true")
+                break
             default:
+                //may add error message for unknown intents or wrong request body
                 break
         }
     } catch (e) {
         console.log(e)
-        res.send("Something went wrong.")
+        res.send("Error in Webhook")
     }
 })
 
@@ -506,6 +655,17 @@ function switchPunctuation(index, length, string = "and") {
         return ` ${string} `
     else
         return ", "
+}
+
+function logRecipe() {
+    if (currentRecipe != null && currentUserID != null) {
+        let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
+        users[users.findIndex(user => user.userID == currentUserID)].dishLog.push({
+            "dishID": currentRecipe.dishID,
+            "time": new Date().getTime()
+        })
+        fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
+    }
 }
 
 app.listen(50001)

@@ -1,8 +1,8 @@
 TODO
-
-intent suggestion in fallback policy
-(name in get_recipe, not supported by recommedation sys)
-setup file for reconfiguration of phrases
-(user interface)
 speech recognition test
-tensorflow -- spacy
+tensorflow/spacy test
+
+
+possible improvements
+dishID (for last recipes), dish name and flavor support in recommedation sys
+setup file for reconfiguration of phrases in actions and webhook

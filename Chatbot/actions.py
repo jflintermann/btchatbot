@@ -7,7 +7,7 @@ from rasa_sdk.events import SlotSet
 
 url = "http://localhost:50001/recipes"
 
-""" create request for recipe """
+""" build and send request for recipe """
 
 
 class ActionRecipe(Action):
@@ -23,7 +23,6 @@ class ActionRecipe(Action):
         time_unit = tracker.get_slot("time_unit")
         cuisine = tracker.get_slot("cuisine")
         course = tracker.get_slot("course")
-        flavor = tracker.get_slot("flavor")
         payload = {"intent": "getRecipe"}
         if ingredient is not None:
             payload.update({"ingredient": ingredient})
@@ -41,10 +40,8 @@ class ActionRecipe(Action):
             payload.update({"cuisine": cuisine})
         if course is not None:
             payload.update({"course": course})
-        if flavor is not None:
-            payload.update({"flavor": flavor})
         if len(payload) == 1:
-            payload.update({"intent": "suggestion"})
+            payload.update({"intent": "getSuggestion"})
         response_text = requests.post(url, data=payload).text
         dispatcher.utter_message(response_text)
         return [SlotSet("ingredient", None),
@@ -55,7 +52,7 @@ class ActionRecipe(Action):
                 SlotSet("time_unit", None),
                 SlotSet("cuisine", None),
                 SlotSet("course", None),
-                SlotSet("flavor", None)]
+                SlotSet("fallback_flag", "recipe")]
 
 
 """ """
@@ -67,6 +64,7 @@ class ActionAnotherRecipe(Action):
 
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message(requests.post(url, data={"intent": "getAnotherRecipe"}).text)
+        return [SlotSet("fallback_flag", "recipe")]
 
 
 """ """
@@ -78,17 +76,7 @@ class ActionFasterRecipe(Action):
 
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message(requests.post(url, data={"intent": "getFasterRecipe"}).text)
-
-
-""" """
-
-
-class ActionHealthierRecipe(Action):
-    def name(self):
-        return "action_healthier_recipe"
-
-    def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message(requests.post(url, data={"intent": "getHealthierRecipe"}).text)
+        return [SlotSet("fallback_flag", "recipe")]
 
 
 """ """
@@ -244,7 +232,7 @@ class ActionStep(Action):
         if step_count is not None:
             payload.update({"stepCount": step_count})
         dispatcher.utter_message(requests.post(url, data=payload).text)
-        return [SlotSet("step_count", None)]
+        return [SlotSet("step_count", None), SlotSet("fallback_flag", "step")]
 
 
 """"""
@@ -256,6 +244,7 @@ class ActionNextStep(Action):
 
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message(requests.post(url, data={"intent": "getNextStep"}).text)
+        return [SlotSet("fallback_flag", "step")]
 
 
 """"""
@@ -267,6 +256,23 @@ class ActionPreviousStep(Action):
 
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message(requests.post(url, data={"intent": "getPreviousStep"}).text)
+        return [SlotSet("fallback_flag", "step")]
+
+
+""" """
+
+
+class ActionRegister(Action):
+    def name(self):
+        return "action_register"
+
+    def run(self, dispatcher, tracker, domain):
+        payload = {"intent": "register"}
+        user_id = tracker.get_slot("user_id")
+        if user_id is not None:
+            payload.update({"userID": user_id})
+        dispatcher.utter_message(requests.post(url, data=payload).text)
+        return [SlotSet("user_id", None)]
 
 
 """ """
@@ -277,7 +283,23 @@ class ActionAuthenticate(Action):
         return "action_authenticate"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Not yet implemented.")
+        payload = {"intent": "authenticate"}
+        user_id = tracker.get_slot("user_id")
+        if user_id is not None:
+            payload.update({"userID": user_id})
+        dispatcher.utter_message(requests.post(url, data=payload).text)
+        return [SlotSet("user_id", None)]
+
+
+""" """
+
+
+class ActionLogOut(Action):
+    def name(self):
+        return "action_log_out"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(requests.post(url, data={"intent": "logOut"}).text)
 
 
 """ """
@@ -288,7 +310,12 @@ class ActionRateDish(Action):
         return "action_rate_dish"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Not yet implemented.")
+        payload = {"intent": "rateDish"}
+        rating = tracker.get_slot("rating")
+        if rating is not None:
+            payload.update({"rating": rating})
+        dispatcher.utter_message(requests.post(url, data=payload).text)
+        return [SlotSet("rating", None)]
 
 
 """ """
@@ -315,7 +342,9 @@ class ActionClear(Action):
         return "action_clear"
 
     def run(self, dispatcher, tracker, domain):
+
         dispatcher.utter_message(requests.post(url, data={"intent": "clear"}).text)
+        return [SlotSet("fallback_flag", None)]
 
 
 """ """
@@ -327,10 +356,107 @@ class ActionRepeat(Action):
 
     def run(self, dispatcher, tracker, domain):
         response = ""
-        for event in tracker.events:
-            if event["event"] == 'bot':
+        history = tracker.events[::-1]
+        for event in history:
+            if event["event"] == "bot":
                 response = event["text"]
+                break
+        history.pop(0)
+        for event in history:
+            if event["event"] == "user":
+                print("--------last message intent ranking--------")
+                for intent in event["parse_data"]["intent_ranking"]:
+                    print(intent["confidence"], intent["name"])
+                print("-------------------------------------------")
+                break
         if response == "":
             dispatcher.utter_message("There was no previous message.")
         else:
             dispatcher.utter_message(response)
+
+
+""""""
+
+
+class ActionFallbackQuestion(Action):
+    def name(self):
+        return "action_fallback_question"
+
+    def run(self, dispatcher, tracker, domain):
+        flag = tracker.get_slot("fallback_flag")
+        history = tracker.events[::-1]
+        for event in history:
+            if event["event"] == "user":
+                print("----------fallback intent ranking----------")
+                for intent in event["parse_data"]["intent_ranking"]:
+                    print(intent["confidence"], intent["name"])
+                print("-------------------------------------------")
+                break
+        current_recipe = requests.post(url, data={"intent": "checkRecipe"}).text
+        if current_recipe == "true":
+            if flag == "recipe":
+                response = "I didn't understand. Do you want to start with the first step?"
+            elif flag == "step":
+                last_step = requests.post(url, data={"intent": "checkStep"}).text
+                if last_step == "true":
+                    rating = requests.post(url, data={"intent": "checkRating"}).text
+                    if rating == "true":
+                        response = "I didn't understand. Do you want a recipe suggestion?"
+                    elif rating == "false":
+                        response = "I didn't understand. Do you want to rate your last dish?"
+                    else:
+                        response = rating
+                elif last_step == "false":
+                    response = "I didn't understand. Do you want the next step?"
+                else:
+                    response = last_step
+            else:
+                response = "I didn't understand. Do you want a recipe suggestion?"
+        elif current_recipe == "false":
+            response = "I didn't understand. Do you want a recipe suggestion?"
+        else:
+            response = current_recipe
+        dispatcher.utter_message(response)
+
+
+""""""
+
+
+class ActionFallback(Action):
+    def name(self):
+        return "action_fallback"
+
+    def run(self, dispatcher, tracker, domain):
+        flag = tracker.get_slot("fallback_flag")
+        set_flag = flag
+        current_recipe = requests.post(url, data={"intent": "checkRecipe"}).text
+        if current_recipe == "true":
+            if flag == "recipe":
+                response = requests.post(url, data={"intent": "getStep", "stepCount": 1}).text
+                set_flag = "step"
+            elif flag == "step":
+                last_step = requests.post(url, data={"intent": "checkStep"}).text
+                if last_step == "true":
+                    rating = requests.post(url, data={"intent": "checkRating"}).text
+                    if rating == "true":
+                        response = requests.post(url, data={"intent": "getSuggestion"}).text
+                        set_flag = "recipe"
+                    elif rating == "false":
+                        response = "How would you rate your last dish on a scale from 1 to 10?"
+                    else:
+                        response = rating
+                elif last_step == "false":
+                    response = requests.post(url, data={"intent": "getNextStep"}).text
+                    set_flag = "step"
+                else:
+                    response = last_step
+            else:
+                response = requests.post(url, data={"intent": "getSuggestion"}).text
+                set_flag = "recipe"
+        elif current_recipe == "false":
+            response = requests.post(url, data={"intent": "getSuggestion"}).text
+            set_flag = "recipe"
+        else:
+            response = current_recipe
+        dispatcher.utter_message(response)
+        return [SlotSet("fallback_flag", set_flag)]

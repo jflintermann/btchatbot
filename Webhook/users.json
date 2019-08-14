@@ -1,1 +1,1 @@
-[{"id":1,"userName":"Bob","lastDishId":1069,"dishName":"Spicy Shrimp and Vegetable Stir-Fry ","rated":true},{"id":2,"userName":"Alice","lastDishId":1236,"dishName":"Steve's Floribean Chicken Chili ","rated":true,"recipe":""}]
+[{"userID":"bob","dishLog":[{"dishID":1219,"time":1565808213238}],"ratings":[]}]
