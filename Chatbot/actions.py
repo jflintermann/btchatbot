@@ -7,6 +7,38 @@ from rasa_sdk.events import SlotSet
 
 url = "http://localhost:50001/recipes"
 
+
+""""""
+
+
+def get_state(flag):
+    current_recipe = requests.post(url, data={"intent": "checkRecipe"}).text
+    if current_recipe == "true":
+        if flag == "recipe":
+            state = "first_step"
+        elif flag == "step":
+            last_step = requests.post(url, data={"intent": "checkStep"}).text
+            if last_step == "true":
+                rating = requests.post(url, data={"intent": "checkRating"}).text
+                if rating == "true":
+                    state = "next_recipe"
+                elif rating == "false":
+                    state = "rate_recipe"
+                else:
+                    state = rating
+            elif last_step == "false":
+                state = "next_step"
+            else:
+                state = last_step
+        else:
+            state = "no_recipe"
+    elif current_recipe == "false":
+        state = "no_recipe"
+    else:
+        state = current_recipe
+    return state
+
+
 """ build and send request for recipe """
 
 
@@ -378,12 +410,38 @@ class ActionRepeat(Action):
 """"""
 
 
+class ActionHelp(Action):
+    def name(self):
+        return "action_help"
+
+    def run(self, dispatcher, tracker, domain):
+        flag = tracker.get_slot("fallback_flag")
+        state = get_state(flag)
+        if state == "no_recipe":
+            response = "You could request any dish or get a recipe suggestion from me."
+        elif state == "next_recipe":
+            response = "You could request a new dish or get a recipe suggestion from me."
+        elif state == "first_step":
+            response = "You could start with the first step, ask any detail about the current recipe or request a new dish."
+        elif state == "next step":
+            response = "You could continue with the next step, ask any detail about the current recipe or request a new dish."
+        elif state == "rate_recipe":
+            response = "You could request a new dish or rate your last one."
+        else:
+            response = state
+        dispatcher.utter_message(response)
+
+
+""""""
+
+
 class ActionFallbackQuestion(Action):
     def name(self):
         return "action_fallback_question"
 
     def run(self, dispatcher, tracker, domain):
         flag = tracker.get_slot("fallback_flag")
+        state = get_state(flag)
         history = tracker.events[::-1]
         for event in history:
             if event["event"] == "user":
@@ -392,30 +450,18 @@ class ActionFallbackQuestion(Action):
                     print(intent["confidence"], intent["name"])
                 print("-------------------------------------------")
                 break
-        current_recipe = requests.post(url, data={"intent": "checkRecipe"}).text
-        if current_recipe == "true":
-            if flag == "recipe":
-                response = "I didn't understand. Do you want to start with the first step?"
-            elif flag == "step":
-                last_step = requests.post(url, data={"intent": "checkStep"}).text
-                if last_step == "true":
-                    rating = requests.post(url, data={"intent": "checkRating"}).text
-                    if rating == "true":
-                        response = "I didn't understand. Do you want a recipe suggestion?"
-                    elif rating == "false":
-                        response = "I didn't understand. Do you want to rate your last dish?"
-                    else:
-                        response = rating
-                elif last_step == "false":
-                    response = "I didn't understand. Do you want the next step?"
-                else:
-                    response = last_step
-            else:
-                response = "I didn't understand. Do you want a recipe suggestion?"
-        elif current_recipe == "false":
-            response = "I didn't understand. Do you want a recipe suggestion?"
+        if state == "no_recipe":
+            response = "I didn't understand. Do you want me to suggest a recipe for you?"
+        elif state == "next_recipe":
+            response = "I didn't understand. Do you want me to suggest a new recipe for you?"
+        elif state == "first_step":
+            response = "I didn't understand. Do you want to start with the first step?"
+        elif state == "next step":
+            response = "I didn't understand. Do you want the next step?"
+        elif state == "rate_recipe":
+            response = "I didn't understand. Do you want to rate your last dish?"
         else:
-            response = current_recipe
+            response = state
         dispatcher.utter_message(response)
 
 
@@ -429,34 +475,19 @@ class ActionFallback(Action):
     def run(self, dispatcher, tracker, domain):
         flag = tracker.get_slot("fallback_flag")
         set_flag = flag
-        current_recipe = requests.post(url, data={"intent": "checkRecipe"}).text
-        if current_recipe == "true":
-            if flag == "recipe":
-                response = requests.post(url, data={"intent": "getStep", "stepCount": 1}).text
-                set_flag = "step"
-            elif flag == "step":
-                last_step = requests.post(url, data={"intent": "checkStep"}).text
-                if last_step == "true":
-                    rating = requests.post(url, data={"intent": "checkRating"}).text
-                    if rating == "true":
-                        response = requests.post(url, data={"intent": "getSuggestion"}).text
-                        set_flag = "recipe"
-                    elif rating == "false":
-                        response = "How would you rate your last dish on a scale from 1 to 10?"
-                    else:
-                        response = rating
-                elif last_step == "false":
-                    response = requests.post(url, data={"intent": "getNextStep"}).text
-                    set_flag = "step"
-                else:
-                    response = last_step
-            else:
-                response = requests.post(url, data={"intent": "getSuggestion"}).text
-                set_flag = "recipe"
-        elif current_recipe == "false":
+        state = get_state(flag)
+        if state == "no_recipe" or "next_recipe":
             response = requests.post(url, data={"intent": "getSuggestion"}).text
             set_flag = "recipe"
+        elif state == "first_step":
+            response = requests.post(url, data={"intent": "getStep", "stepCount": 1}).text
+            set_flag = "step"
+        elif state == "next step":
+            response = requests.post(url, data={"intent": "getNextStep"}).text
+            set_flag = "step"
+        elif state == "rate_recipe":
+            response = "How would you rate your last dish on a scale from 1 to 10?"
         else:
-            response = current_recipe
+            response = state
         dispatcher.utter_message(response)
         return [SlotSet("fallback_flag", set_flag)]

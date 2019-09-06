@@ -379,6 +379,16 @@
 - reset everything
 - clear system
 
+## intent: help
+- what can i do?
+- what are my options?
+- can you help me?
+- help
+- help me
+- i don't know what i can do
+- list my options
+- options
+
 ## intent:set_recommendation_system
 - switch to [content](recommendation_system)
 - switch to [collaborative](recommendation_system)

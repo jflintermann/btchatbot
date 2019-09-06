@@ -4,7 +4,7 @@ const app = express()
 const fs = require("fs")
 const path = require("path")
 
-//may add more recommendation systems here and in line 31
+//may add more urls here and in line 31
 let recommendationSystem = "content based"
 let contentBasedURL = "http://localhost:3001/dishes/getBy?"
 let collaborativeURL = "http://localhost:1112/dishes/getBy/?"

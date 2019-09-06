@@ -125,6 +125,10 @@
   - action_recommendation_system
   - slot{"recommendation_system": null}
 
+## help
+* help
+  - action_help
+
 ## reset everything
 * clear
   - action_clear

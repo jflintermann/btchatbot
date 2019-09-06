@@ -27,6 +27,7 @@ actions:
 - action_recommendation_system
 - action_clear
 - action_repeat
+- action_help
 - action_fallback_question
 - action_fallback
 entities:
@@ -73,6 +74,7 @@ intents:
 - rate_dish
 - set_recommendation_system
 - clear
+- help
 - repeat_last
 slots:
   ingredient:
