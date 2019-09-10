@@ -1,0 +1,15 @@
+# Configuration for Rasa NLU.
+# https://rasa.com/docs/rasa/nlu/components/
+language: en
+pipeline: pretrained_embeddings_spacy
+
+
+# Configuration for Rasa Core.
+# https://rasa.com/docs/rasa/core/policies/
+policies:
+  - name: MemoizationPolicy
+  - name: KerasPolicy
+  - name: FallbackPolicy
+    core_threshold: 0.3
+    nlu_threshold: 0.3
+    fallback_action_name: "action_fallback_question"

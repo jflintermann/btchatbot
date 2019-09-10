@@ -4,7 +4,6 @@ const app = express()
 const fs = require("fs")
 const path = require("path")
 
-//may add more urls here and in line 31
 let recommendationSystem = "content based"
 let contentBasedURL = "http://localhost:3001/dishes/getBy?"
 let collaborativeURL = "http://localhost:1112/dishes/getBy/?"
@@ -12,14 +11,15 @@ let currentHeader
 let currentURL
 let currentUserID
 let recipes
-let currentRecipe = JSON.parse(fs.readFileSync(path.join(__dirname, "currentRecipe.json"))) //just for testing
+let currentRecipe = JSON.parse(fs.readFileSync(path.join(__dirname, "currentRecipe.json"))) // just for debugging
 let currentStep = 0
+let phrases = JSON.parse(fs.readFileSync(path.join(__dirname, "/../phrases.json")))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.post("/recipes",function (req, res, next) {
-    console.log(req.body)                                                                                               //DEBUG
+    console.log(req.body) // just for debugging
     try {
         switch (req.body.intent) {
             case "getRecipe":
@@ -131,66 +131,68 @@ app.post("/recipes",function (req, res, next) {
                     if (currentURL.substr(currentURL.length - 1) != "?") currentURL = currentURL.concat("&")
                     currentURL = currentURL.concat(`allowedCourses=${course}`)
                 }
-                console.log(currentHeader, currentURL)                                                                  //DEBUG
+                console.log(currentHeader, currentURL) // just for debugging
                 axios.get(currentURL, currentHeader)
                     .then(response => {
                         recipes = response.data
                         if (recipes.length == 0) {
-                            res.send("Sorry, I didn't find a fitting recipe.")
+                            res.send(phrases.recipeDeny)
                         } else {
-                            //if response is json array
+                            // if response is json array
                             try {
                                 recipes.map(recipe => JSON.parse(recipe))
                             } catch (e) {
-                                //recipes don't need to be parsed
+                                // recipes don't need to be parsed
                             }
                             currentRecipe = getRandomRecipe(recipes)
                             fs.writeFileSync(path.join(__dirname, "currentRecipe.json"), JSON.stringify(currentRecipe))
                             logRecipe()
-                            res.send(`How about "${currentRecipe.name}"?`)
+                            res.send(phrases.recipeSuggestion1 + currentRecipe.name + phrases.recipeSuggestion2)
                         }
 
                     }).catch (e => {
-                        res.send("Could not connect to database.")
-                        //console.log(e)                                                                                //DEBUG
+                        res.send(phrases.connectionError)
+                        console.log(e)
                     })
                 break
             case "getSuggestion":
-                res.send("To be implemented")
+                // get dish from recommendation system based on personal preference
+                // not supported yet
+                res.send("TODO")
                 break
             case "getAnotherRecipe":
                 if (recipes == null)
-                    res.send("Sorry, I didn't find another fitting recipe.")
+                    res.send(phrases.anotherRecipeDeny)
                 else {
                     recipes.filter(recipe => recipe != currentRecipe)
                     currentRecipe = getRandomRecipe(recipes)
                     if (currentRecipe == null)
-                        res.send("Sorry, I didn't find another fitting recipe.")
+                        res.send(phrases.anotherRecipeDeny)
                     else {
                         logRecipe()
-                        res.send(`How about "${currentRecipe.name}"?`)
+                        res.send(phrases.recipeSuggestion1 + currentRecipe.name + phrases.recipeSuggestion2)
                     }
                 }
                 break
             case "getFasterRecipe":
                 if (recipes == null)
-                    res.send("Sorry, I didn't find a faster recipe.")
+                    res.send(phrases.fasterRecipeDeny)
                 else {
                     recipes.filter(recipe => recipe != currentRecipe || recipe.time < currentRecipe.time)
                     currentRecipe = getRandomRecipe(recipes)
                     if (currentRecipe == null)
-                        res.send("Sorry, I didn't find a faster recipe.")
+                        res.send(phrases.fasterRecipeDeny)
                     else {
                         logRecipe()
-                        res.send(`How about "${currentRecipe.name}"? It takes ${currentRecipe.time} minutes.`)
+                        res.send(phrases.recipeSuggestion1 + currentRecipe.name + phrases.recipeSuggestion2 + " " + phrases.recipeTime1 + Math.round(currentRecipe.time / 60) + phrases.recipeTime2)
                     }
                 }
                 break
             case "getIngredient":
                 if (currentRecipe == null) {
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 } else {
-                    let responseString = "Per person you need "
+                    let responseString = phrases.ingredientList
                     let ingredientArray = []
                     let recipeIngredients = []
                     currentRecipe.ingredients.forEach(ingredient => recipeIngredients.push(ingredient.name))
@@ -209,15 +211,15 @@ app.post("/recipes",function (req, res, next) {
                         if (Array.isArray(req.body.ingredient)) {
                             ingredientArray = [...new Set(req.body.ingredient)]
                             if (ingredientArray.length > 1) {
-                                responseString = "You need neither "
+                                responseString = phrases.ingredientDenyList
                                 ingredientArray.forEach((ingredient, index, array) => {
-                                    let nor = switchPunctuation(index, array.length, "nor")
+                                    let nor = switchPunctuation(index, array.length, phrases.nor)
                                     responseString = responseString.concat(`${ingredient}${nor}`)
                                 })
                             } else
-                                responseString = `You don't need any ${ingredientArray}.`
+                                responseString = phrases.ingredientDeny1 + ingredientArray + phrases.ingredientDeny2
                         } else {
-                            responseString = `You don't need any ${req.body.ingredient}.`
+                            responseString = phrases.ingredientDeny1 + req.body.ingredient + phrases.ingredientDeny2
                         }
                     }
                     res.send(responseString)
@@ -225,9 +227,9 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getNutrient":
                 if (currentRecipe == null) {
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 } else {
-                    let responseString = "Per person this recipe contains approximately "
+                    let responseString = phrases.nutrientList
                     let nutrientArray = []
                     if ("nutrient" in req.body) {
                         Array.isArray(req.body.nutrient) ? nutrientArray = [...new Set(req.body.nutrient)] : nutrientArray.push(req.body.nutrient)
@@ -238,7 +240,7 @@ app.post("/recipes",function (req, res, next) {
                     if (ingredientArray.length > 0) {
                         nutrientArray.forEach((nutrient, index, array) => {
                             let quantity = Math.round(currentRecipe.nutrients[0][nutrient].quantity)
-                            if (quantity == 0) quantity = "less than 1"
+                            if (quantity == 0) quantity = phrases.nutrientLittle
                             let unit = currentRecipe.nutrients[0][nutrient].unit
                             let label = currentRecipe.nutrients[0][nutrient].label
                             let and = switchPunctuation(index, array.length)
@@ -248,15 +250,15 @@ app.post("/recipes",function (req, res, next) {
                         if (Array.isArray(req.body.nutrient)) {
                             nutrientArray = [...new Set(req.body.nutrient)]
                             if (nutrientArray.length > 1) {
-                                responseString = "This recipe contains neither "
+                                responseString = phrases.nutrientDenyList
                                 nutrientArray.forEach((nutrient, index, array) => {
-                                    let nor = switchPunctuation(index, array.length, "nor")
+                                    let nor = switchPunctuation(index, array.length, phrases.nor)
                                     responseString = responseString.concat(`${nutrient}${nor}`)
                                 })
                             } else
-                                responseString = `This recipe does not contain ${nutrientArray}.`
+                                responseString = phrases.nutrientDeny1 + nutrientArray + phrases.nutrientDeny2
                         } else {
-                            responseString = `This recipe does not contain ${req.body.nutrient}.`
+                            responseString = phrases.nutrientDeny1 + req.body.nutrient + phrases.nutrientDeny2
                         }
                     }
                     res.send(responseString)
@@ -264,9 +266,9 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getHealthLabel":
                 if (currentRecipe == null) {
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 } else {
-                    let responseString = "This recipe is labelled as "
+                    let responseString = phrases.labelList
                     let healthArray = []
                     if ("healthLabel" in req.body) {
                         Array.isArray(req.body.healthLabel) ? healthArray = [...new Set(req.body.healthLabel)] : healthArray.push(req.body.healthLabel)
@@ -283,15 +285,15 @@ app.post("/recipes",function (req, res, next) {
                         if (Array.isArray(req.body.healthLabel)) {
                             healthArray = [...new Set(req.body.healthLabel)]
                             if (healthArray.length > 1) {
-                                responseString = "This recipe is labelled as neither "
+                                responseString = phrases.labelDenyList
                                 healthArray.forEach((healthLabel, index, array) => {
-                                    let nor = switchPunctuation(index, array.length, "nor")
+                                    let nor = switchPunctuation(index, array.length, phrases.nor)
                                     responseString = responseString.concat(`${healthLabel}${nor}`)
                                 })
                             } else
-                                responseString = `This recipe is not labelled as ${healthArray}.`
+                                responseString = phrases.labelDeny1 + healthArray + phrases.labelDeny2
                         } else {
-                            responseString = `This recipe is not labelled as ${req.body.healthLabel}.`
+                            responseString = phrases.labelDeny1 + req.body.healthLabel + phrases.labelDeny2
                         }
                     }
                     res.send(responseString)
@@ -299,9 +301,9 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getCaution":
                 if (currentRecipe == null) {
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 } else {
-                    let responseString = "This recipe contains "
+                    let responseString = phrases.cautionList
                     let cautionArray = []
                     if ("caution" in req.body) {
                         Array.isArray(req.body.caution) ? cautionArray = [...new Set(req.body.caution)] : cautionArray.push(req.body.caution)
@@ -318,15 +320,15 @@ app.post("/recipes",function (req, res, next) {
                         if (Array.isArray(req.body.caution)) {
                             cautionArray = [...new Set(req.body.caution)]
                             if (cautionArray.length > 1) {
-                                responseString = "This recipe contains neither "
+                                responseString = phrases.cautionDenyList
                                 cautionArray.forEach((caution, index, array) => {
-                                    let nor = switchPunctuation(index, array.length, "nor")
+                                    let nor = switchPunctuation(index, array.length, phrases.nor)
                                     responseString = responseString.concat(`${caution}${nor}`)
                                 })
                             } else
-                                responseString = `This recipe does not contain ${cautionArray}.`
+                                responseString = phrases.cautionDeny1 + cautionArray + phrases.cautionDeny2
                         } else {
-                            responseString = `This recipe does not contain ${req.body.caution}.`
+                            responseString = phrases.cautionDeny1 + req.body.caution + phrases.cautionDeny2
                         }
                     }
                     res.send(responseString)
@@ -334,9 +336,9 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getDietLabel":
                 if (currentRecipe == null) {
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 } else {
-                    let responseString = "This recipe is labelled as "
+                    let responseString = phrases.labelList
                     let dietArray = []
                     if ("dietLabel" in req.body) {
                         Array.isArray(req.body.dietLabel) ? dietArray = [...new Set(req.body.dietLabel)] : dietArray.push(req.body.dietLabel)
@@ -353,15 +355,15 @@ app.post("/recipes",function (req, res, next) {
                         if (Array.isArray(req.body.dietLabel)) {
                             dietArray = [...new Set(req.body.dietLabel)]
                             if (dietArray.length > 1) {
-                                responseString = "This recipe is labelled as neither "
+                                responseString = phrases.labelDenyList
                                 dietArray.forEach((dietLabel, index, array) => {
-                                    let nor = switchPunctuation(index, array.length, "nor")
+                                    let nor = switchPunctuation(index, array.length, phrases.nor)
                                     responseString = responseString.concat(`${dietLabel}${nor}`)
                                 })
                             } else
-                                responseString = `This recipe is not labelled as ${dietArray}.`
+                                responseString = phrases.labelDeny1 + dietArray + phrases.labelDeny2
                         } else {
-                            responseString = `This recipe is not labelled as ${req.body.dietLabel}.`
+                            responseString = phrases.labelDeny1 + req.body.dietLabel + phrases.labelDeny2
                         }
                     }
                     res.send(responseString)
@@ -369,39 +371,39 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getFlavor":
                 if (currentRecipe == null) {
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 } else {
-                    let responseString = "This recipe is considered "
+                    let responseString = phrases.flavorList
                     let flavorArray = []
                     if ("flavor" in req.body) {
                         Array.isArray(req.body.flavor) ? flavorArray = [...new Set(req.body.flavor)] : flavorArray.push(req.body.flavor)
                         flavorArray = flavorArray.filter(flavor => flavor in currentRecipe.flavors && currentRecipe.flavors[flavor] >= 0.3)
                     } else {
                         flavorArray = Object.keys(currentRecipe.flavors)
+                        // may adjust threshold
                         flavorArray = flavorArray.filter(flavor => currentRecipe.flavors[flavor] >= 0.3)
                     }
                     if (flavorArray.length > 0) {
                         flavorArray.forEach((flavor, index, array) => {
                             flavorValue = currentRecipe.flavors[flavor]
                             let and = switchPunctuation(index, array.length)
-                            if (flavorValue >= 0.5)
+                            // may adjust threshold
+                            if (flavorValue >= 0.3)
                                 responseString = responseString.concat(`${flavor}${and}`)
-                            else if (flavorValue >= 0.3)
-                                responseString = responseString.concat(`mildly ${flavor}${and}`)
                         })
                     } else {
                         if (Array.isArray(req.body.flavor)) {
                             flavorArray = [...new Set(req.body.flavor)]
                             if (flavorArray.length > 1) {
-                                responseString = "This recipe is considered neither "
+                                responseString = phrases.flavorDenyList
                                 flavorArray.forEach((flavor, index, array) => {
-                                    let nor = switchPunctuation(index, array.length, "nor")
+                                    let nor = switchPunctuation(index, array.length, phrases.nor)
                                     responseString = responseString.concat(`${flavor}${nor}`)
                                 })
                             } else
-                                responseString = `This recipe is not considered ${flavorArray}.`
+                                responseString = phrases.flavorDeny1 + flavorArray + phrases.flavorDeny2
                         } else {
-                            responseString = `This recipe is not considered ${req.body.flavor}.`
+                            responseString = phrases.flavorDeny1 + req.body.flavor + phrases.flavorDeny2
                         }
                     }
                     res.send(responseString)
@@ -409,40 +411,40 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getDescription":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else
                     res.send(currentRecipe.description)
                 break
             case "getPrepTime":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else
-                    res.send(`The preparation takes ${Math.round(currentRecipe.time / 60)} minutes.`)
+                    res.send(phrases.recipeTime1 + Math.round(currentRecipe.time / 60) + phrases.recipeTime2)
                 break
             case "getCuisine":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else {
                     if (currentRecipe.cuisine == null)
-                        res.send("It is not know.")
+                        res.send(phrases.cuisineDeny)
                     else
-                        res.send(`This is a ${currentRecipe.cuisine} recipe.`)
+                        res.send(phrases.cuisine1 + currentRecipe.cuisine + phrases.cuisine2)
                 }
                 break
             case "getCourse":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else
-                    res.send(`It is categorized under ${currentRecipe.course}.`)
+                    res.send(phrases.course1 + currentRecipe.course + phrases.course2)
                 break
             case "getStep":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else {
                     responseString = ""
                     if ("stepCount" in req.body) {
                         if (req.body.stepCount < 1 || req.body.stepCount > currentRecipe.preperation.length) {
-                            responseString = `This recipe only has ${currentRecipe.preperation.length} steps.`
+                            responseString = phrases.stepMax1 + currentRecipe.preperation.length + phrases.stepMax2
                         } else {
                             currentStep = req.body.stepCount-1
                             responseString = currentRecipe.preperation[currentStep]
@@ -455,28 +457,28 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "getNextStep":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else {
                     responseString = ""
                     if (currentStep+1 < currentRecipe.preperation.length) {
                         currentStep++
                         responseString = currentRecipe.preperation[currentStep]
                     } else {
-                        responseString = `This recipe only has ${currentRecipe.preperation.length} steps.`
+                        responseString = phrases.stepMax1 + currentRecipe.preperation.length + phrases.stepMax2
                     }
                     res.send(responseString)
                 }
                 break
             case "getPreviousStep":
                 if (currentRecipe == null)
-                    res.send("There is no current recipe.")
+                    res.send(phrases.currentRecipeDeny)
                 else {
                     responseString = ""
                     if (currentStep-1 >= 0) {
                         currentStep--
                         responseString = currentRecipe.preperation[currentStep]
                     } else {
-                        responseString = "There is no step before the first one."
+                        responseString = phrases.stepMin
                     }
                     res.send(responseString)
                 }
@@ -488,7 +490,7 @@ app.post("/recipes",function (req, res, next) {
                     for (index in users) {
                         if (req.body.userID.toLowerCase() == users[index].userID.toLowerCase()) {
                             currentUserID = users[index].userID
-                            responseString = `User already exists. Switched to user profile ${users[index].userID}.`
+                            responseString = phrases.userExists1 + users[index].userID + phrases.userExists2
                         }
                     }
                     if (responseString == "") {
@@ -500,10 +502,10 @@ app.post("/recipes",function (req, res, next) {
                         fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
                         currentUserID = req.body.userID
                         logRecipe()
-                        responseString = `Created and switched to user profile ${req.body.userID}.`
+                        responseString = phrases.userCreated1 + req.body.userID + phrases.userCreated2
                     }
                 } else {
-                    responseString = "Please choose a username to register."
+                    responseString = phrases.userRegisterDeny
                 }
                 res.send(responseString)
                 break
@@ -514,25 +516,25 @@ app.post("/recipes",function (req, res, next) {
                     for (index in users) {
                         if (req.body.userID.toLowerCase() == users[index].userID.toLowerCase()) {
                             currentUserID = users[index].userID
-                            responseString = `Switched to user profile ${users[index].userID}.`
+                            responseString = phrases.userAuth1 + users[index].userID + phrases.userAuth2
                         }
                     }
                     if (responseString == "") {
-                        responseString = `User ${req.body.userID} not found.`
+                        responseString = phrases.userNotFound1 + req.body.userID + phrases.userNotFound2
                     }
                 } else {
-                    responseString = "Please give a username to authenticate."
+                    responseString = phrases.userAuthDeny
                 }
                 res.send(responseString)
                 break
             case "log_out":
                 currentUserID = null
-                res.send("Switched to default user profile.")
+                res.send(phrases.userDefault)
                 break
             case "rateDish":
                 responseString = ""
                 if (currentUserID == null)
-                    res.send("Please authenticate yourself first.")
+                    res.send(phrases.currentUserDeny)
                 else {
                     if ("rating" in req.body) {
                         let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
@@ -551,7 +553,7 @@ app.post("/recipes",function (req, res, next) {
                             else
                                 currentURL = contentBasedURL
                             currentURL = currentURL.concat(`dishId=${currentRecipe.dishID}`)
-                            console.log(currentHeader, currentURL)                                                      //DEBUG
+                            console.log(currentHeader, currentURL) // just for debugging
                             axios.get(currentURL, currentHeader)
                                 .then(response => {
                                     users[userIndex].ratings.push({
@@ -560,16 +562,16 @@ app.post("/recipes",function (req, res, next) {
                                         "time": new Date().getTime()
                                     })
                                     fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
-                                    res.send(`Rated "${currentRecipe.name}" as ${req.body.rating} out of 10.`)
+                                    res.send(phrases.rating1 + currentRecipe.name + phrases.rating2 + req.body.rating + phrases.rating3)
                                 }).catch(e => {
-                                    //console.log(e)                                                                    //DEBUG
-                                    res.send("Could not connect to database.")
+                                    console.log(e)
+                                    res.send(phrases.connectionError)
                                 })
                         } else {
                             oldRating = users[userIndex].ratings[ratingIndex].rating
                             // if old rating didn't change
                             if (oldRating == req.body.rating)
-                                res.send(`You have already rated "${currentRecipe.name}" as ${req.body.rating} out of 10.`)
+                                res.send(phrases.ratingSame + currentRecipe.name + phrases.rating2 + req.body.rating + phrases.rating3)
                             // adjust old rating if it changed
                             else {
                                 currentHeader = {
@@ -583,7 +585,7 @@ app.post("/recipes",function (req, res, next) {
                                 else
                                     currentURL = contentBasedURL
                                 currentURL = currentURL.concat(`dishId=${currentRecipe.dishID}`)
-                                console.log(currentHeader, currentURL)                                                  //DEBUG
+                                console.log(currentHeader, currentURL) // just for debugging
                                 axios.get(currentURL, currentHeader)
                                     .then(response => {
                                         users[userIndex].ratings[ratingIndex] = {
@@ -592,27 +594,27 @@ app.post("/recipes",function (req, res, next) {
                                         "time": new Date().getTime()
                                         }
                                         fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
-                                        res.send(`Adjusted rating for "${currentRecipe.name}" from ${oldRating} to ${req.body.rating} out of 10.`)
+                                        res.send(phrases.ratingAdjust1 + currentRecipe.name + phrases.ratingAdjust2 + oldRating + phrases.ratingAdjust3 + req.body.rating + phrases.rating3)
                                     }).catch(e => {
-                                        //console.log(e)                                                                //DEBUG
-                                        res.send("Could not connect to database.")
+                                        console.log(e)
+                                        res.send(phrases.connectionError)
                                     })
                             }
                         }
                     } else {
-                        res.send("Please choose a rating for this dish.")
+                        res.send(phrases.ratingDeny)
                     }
                 }
                 break
             case "setRecommendationSystem":
                 recommendationSystem = req.body.recommendationSystem
-                res.send(`Recommendation system is set to ${recommendationSystem}.`)
+                res.send(phrases.system1 + recommendationSystem + phrases.system2)
                 break
             case "clear":
                 currentRecipe = null
                 recipes = null
                 currentStep = 0
-                res.send("Recipe has been reset.")
+                res.send(phrases.clear)
                 break
             case "checkRecipe":
                 if (currentRecipe == null)
@@ -635,12 +637,12 @@ app.post("/recipes",function (req, res, next) {
                     res.send("true")
                 break
             default:
-                //may add error message for unknown intents or wrong request body
+                // may add error message for unknown intent or wrong request body
                 break
         }
     } catch (e) {
         console.log(e)
-        res.send("Error in Webhook")
+        res.send(phrases.webhookError)
     }
 })
 
@@ -648,7 +650,7 @@ function getRandomRecipe(recipes) {
     return recipes[Math.floor(Math.random() * recipes.length)]
 }
 
-function switchPunctuation(index, length, string = "and") {
+function switchPunctuation(index, length, string=phrases.and) {
     if (index == length-1)
         return "."
     if (index == length-2)

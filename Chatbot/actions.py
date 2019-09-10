@@ -4,11 +4,15 @@ from __future__ import unicode_literals
 import requests
 from rasa_sdk import Action
 from rasa_sdk.events import SlotSet
+import json
+import os.path
 
+with open(os.path.dirname(__file__) + '/../phrases.json') as phrases_json:
+    phrases = json.load(phrases_json)
 url = "http://localhost:50001/recipes"
 
 
-""""""
+""" get and return the conversation state from flags and webhook """
 
 
 def get_state(flag):
@@ -39,7 +43,7 @@ def get_state(flag):
     return state
 
 
-""" build and send request for recipe """
+""" build and send webhook request for recipe """
 
 
 class ActionRecipe(Action):
@@ -87,7 +91,7 @@ class ActionRecipe(Action):
                 SlotSet("fallback_flag", "recipe")]
 
 
-""" """
+""" webhook request for another recipe """
 
 
 class ActionAnotherRecipe(Action):
@@ -99,7 +103,7 @@ class ActionAnotherRecipe(Action):
         return [SlotSet("fallback_flag", "recipe")]
 
 
-""" """
+""" webhook request for a faster recipe """
 
 
 class ActionFasterRecipe(Action):
@@ -111,7 +115,7 @@ class ActionFasterRecipe(Action):
         return [SlotSet("fallback_flag", "recipe")]
 
 
-""" """
+""" webhook request for ingredients """
 
 
 class ActionIngredient(Action):
@@ -127,7 +131,7 @@ class ActionIngredient(Action):
         return [SlotSet("ingredient", None)]
 
 
-""" """
+""" webhook request for nutrients """
 
 
 class ActionNutrient(Action):
@@ -143,7 +147,7 @@ class ActionNutrient(Action):
         return [SlotSet("nutrient", None)]
 
 
-""" """
+""" webhook request for health labels """
 
 
 class ActionHealthLabel(Action):
@@ -159,7 +163,7 @@ class ActionHealthLabel(Action):
         return [SlotSet("health_label", None)]
 
 
-""" """
+""" webhook request for cautions """
 
 
 class ActionCaution(Action):
@@ -175,7 +179,7 @@ class ActionCaution(Action):
         return [SlotSet("caution", None)]
 
 
-""""""
+""" webhook request for diet labels """
 
 
 class ActionDietLabel(Action):
@@ -191,7 +195,7 @@ class ActionDietLabel(Action):
         return [SlotSet("diet_label", None)]
 
 
-""""""
+""" webhook request for flavors """
 
 
 class ActionFlavor(Action):
@@ -207,7 +211,7 @@ class ActionFlavor(Action):
         return [SlotSet("flavor", None)]
 
 
-""" """
+""" webhook request for description """
 
 
 class ActionDescription(Action):
@@ -218,7 +222,7 @@ class ActionDescription(Action):
         dispatcher.utter_message(requests.post(url, data={"intent": "getDescription"}).text)
 
 
-""" """
+""" webhook request for preparation time """
 
 
 class ActionPrepTime(Action):
@@ -229,7 +233,7 @@ class ActionPrepTime(Action):
         dispatcher.utter_message(requests.post(url, data={"intent": "getPrepTime"}).text)
 
 
-""""""
+""" webhook request for cuisine """
 
 
 class ActionCuisine(Action):
@@ -240,7 +244,7 @@ class ActionCuisine(Action):
         dispatcher.utter_message(requests.post(url, data={"intent": "getCuisine"}).text)
 
 
-""""""
+""" webhook request for course """
 
 
 class ActionCourse(Action):
@@ -251,7 +255,7 @@ class ActionCourse(Action):
         dispatcher.utter_message(requests.post(url, data={"intent": "getCourse"}).text)
 
 
-""""""
+""" webhook request for preparation step """
 
 
 class ActionStep(Action):
@@ -267,7 +271,7 @@ class ActionStep(Action):
         return [SlotSet("step_count", None), SlotSet("fallback_flag", "step")]
 
 
-""""""
+""" webhook request for next preparation step """
 
 
 class ActionNextStep(Action):
@@ -279,7 +283,7 @@ class ActionNextStep(Action):
         return [SlotSet("fallback_flag", "step")]
 
 
-""""""
+""" webhook request for previous preparation step """
 
 
 class ActionPreviousStep(Action):
@@ -291,7 +295,7 @@ class ActionPreviousStep(Action):
         return [SlotSet("fallback_flag", "step")]
 
 
-""" """
+""" webhook request for registering a new user """
 
 
 class ActionRegister(Action):
@@ -307,7 +311,7 @@ class ActionRegister(Action):
         return [SlotSet("user_id", None)]
 
 
-""" """
+"""  webhook request for user authentication """
 
 
 class ActionAuthenticate(Action):
@@ -323,7 +327,7 @@ class ActionAuthenticate(Action):
         return [SlotSet("user_id", None)]
 
 
-""" """
+"""  webhook request for user log out """
 
 
 class ActionLogOut(Action):
@@ -334,7 +338,7 @@ class ActionLogOut(Action):
         dispatcher.utter_message(requests.post(url, data={"intent": "logOut"}).text)
 
 
-""" """
+"""  webhook request for rating a recipe  """
 
 
 class ActionRateDish(Action):
@@ -350,7 +354,7 @@ class ActionRateDish(Action):
         return [SlotSet("rating", None)]
 
 
-""" """
+"""  webhook request for setting recommendation system """
 
 
 class ActionRecommendationSystem(Action):
@@ -366,7 +370,7 @@ class ActionRecommendationSystem(Action):
         return [SlotSet("recommendation_system", None)]
 
 
-""" """
+"""  reset conversation state and webhook request for resetting recipes """
 
 
 class ActionClear(Action):
@@ -379,7 +383,7 @@ class ActionClear(Action):
         return [SlotSet("fallback_flag", None)]
 
 
-""" """
+""" repeat last message uttered by bot """
 
 
 class ActionRepeat(Action):
@@ -402,12 +406,12 @@ class ActionRepeat(Action):
                 print("-------------------------------------------")
                 break
         if response == "":
-            dispatcher.utter_message("There was no previous message.")
+            dispatcher.utter_message(phrases["repeatDeny"])
         else:
             dispatcher.utter_message(response)
 
 
-""""""
+""" inform user about possible next actions """
 
 
 class ActionHelp(Action):
@@ -418,21 +422,21 @@ class ActionHelp(Action):
         flag = tracker.get_slot("fallback_flag")
         state = get_state(flag)
         if state == "no_recipe":
-            response = "You could request any dish or get a recipe suggestion from me."
+            response = phrases["helpNoRecipe"]
         elif state == "next_recipe":
-            response = "You could request a new dish or get a recipe suggestion from me."
+            response = phrases["helpNextRecipe"]
         elif state == "first_step":
-            response = "You could start with the first step, ask any detail about the current recipe or request a new dish."
+            response = phrases["helpFirstStep"]
         elif state == "next step":
-            response = "You could continue with the next step, ask any detail about the current recipe or request a new dish."
+            response = phrases["helpNextStep"]
         elif state == "rate_recipe":
-            response = "You could request a new dish or rate your last one."
+            response = phrases["helpRateRecipe"]
         else:
             response = state
         dispatcher.utter_message(response)
 
 
-""""""
+""" print intent ranking in console and give proper suggestion """
 
 
 class ActionFallbackQuestion(Action):
@@ -451,21 +455,21 @@ class ActionFallbackQuestion(Action):
                 print("-------------------------------------------")
                 break
         if state == "no_recipe":
-            response = "I didn't understand. Do you want me to suggest a recipe for you?"
+            response = phrases["fallbackNoRecipe"]
         elif state == "next_recipe":
-            response = "I didn't understand. Do you want me to suggest a new recipe for you?"
+            response = phrases["fallbackNextRecipe"]
         elif state == "first_step":
-            response = "I didn't understand. Do you want to start with the first step?"
+            response = phrases["fallbackFirstStep"]
         elif state == "next step":
-            response = "I didn't understand. Do you want the next step?"
+            response = phrases["fallbackNextStep"]
         elif state == "rate_recipe":
-            response = "I didn't understand. Do you want to rate your last dish?"
+            response = phrases["fallbackRateRecipe"]
         else:
             response = state
         dispatcher.utter_message(response)
 
 
-""""""
+""" execute proper fallback after fallback question affirmed """
 
 
 class ActionFallback(Action):
@@ -486,7 +490,7 @@ class ActionFallback(Action):
             response = requests.post(url, data={"intent": "getNextStep"}).text
             set_flag = "step"
         elif state == "rate_recipe":
-            response = "How would you rate your last dish on a scale from 1 to 10?"
+            response = phrases["fallbackAskRating"]
         else:
             response = state
         dispatcher.utter_message(response)
