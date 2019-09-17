@@ -7,6 +7,7 @@ actions:
 - action_recipe
 - action_another_recipe
 - action_faster_recipe
+- action_name
 - action_ingredient
 - action_nutrient
 - action_health_label
@@ -24,13 +25,13 @@ actions:
 - action_authenticate
 - action_log_out
 - action_rate_dish
-- action_recommendation_system
 - action_clear
 - action_repeat
 - action_help
 - action_fallback_question
 - action_fallback
 entities:
+- name
 - ingredient
 - negative_ingredient
 - nutrient
@@ -55,6 +56,7 @@ intents:
 - get_recipe
 - get_another_recipe
 - get_faster_recipe
+- get_name
 - get_ingredient
 - get_nutrient
 - get_health_label
@@ -72,11 +74,12 @@ intents:
 - authenticate
 - log_out
 - rate_dish
-- set_recommendation_system
 - clear
 - help
 - repeat_last
 slots:
+  name:
+    type: text
   ingredient:
     type: list
   negative_ingredient:
@@ -109,8 +112,6 @@ slots:
     max_value: 10
     min_value: 1
     type: float
-  recommendation_system:
-    type: text
   fallback_flag:
     type: text
 templates:

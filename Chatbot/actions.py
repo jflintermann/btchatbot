@@ -51,6 +51,7 @@ class ActionRecipe(Action):
         return "action_recipe"
 
     def run(self, dispatcher, tracker, domain):
+        name = tracker.get_slot("name")
         ingredient = tracker.get_slot("ingredient")
         negative_ingredient = tracker.get_slot("negative_ingredient")
         health_label = tracker.get_slot("health_label")
@@ -59,7 +60,10 @@ class ActionRecipe(Action):
         time_unit = tracker.get_slot("time_unit")
         cuisine = tracker.get_slot("cuisine")
         course = tracker.get_slot("course")
+        flavor = tracker.get_slot("flavor")
         payload = {"intent": "getRecipe"}
+        if name is not None:
+            payload.update({"name": name})
         if ingredient is not None:
             payload.update({"ingredient": ingredient})
         if negative_ingredient is not None:
@@ -76,11 +80,12 @@ class ActionRecipe(Action):
             payload.update({"cuisine": cuisine})
         if course is not None:
             payload.update({"course": course})
-        if len(payload) == 1:
-            payload.update({"intent": "getSuggestion"})
+        if flavor is not None:
+            payload.update({"flavor": flavor})
         response_text = requests.post(url, data=payload).text
         dispatcher.utter_message(response_text)
-        return [SlotSet("ingredient", None),
+        return [SlotSet("name", None),
+                SlotSet("ingredient", None),
                 SlotSet("negative_ingredient", None),
                 SlotSet("health_label", None),
                 SlotSet("diet_label", None),
@@ -88,6 +93,7 @@ class ActionRecipe(Action):
                 SlotSet("time_unit", None),
                 SlotSet("cuisine", None),
                 SlotSet("course", None),
+                SlotSet("flavor", None),
                 SlotSet("fallback_flag", "recipe")]
 
 
@@ -209,6 +215,17 @@ class ActionFlavor(Action):
             payload.update({"flavor": flavor})
         dispatcher.utter_message(requests.post(url, data=payload).text)
         return [SlotSet("flavor", None)]
+
+
+""" webhook request for dish name """
+
+
+class ActionDescription(Action):
+    def name(self):
+        return "action_name"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(requests.post(url, data={"intent": "getName"}).text)
 
 
 """ webhook request for description """
@@ -352,22 +369,6 @@ class ActionRateDish(Action):
             payload.update({"rating": rating})
         dispatcher.utter_message(requests.post(url, data=payload).text)
         return [SlotSet("rating", None)]
-
-
-"""  webhook request for setting recommendation system """
-
-
-class ActionRecommendationSystem(Action):
-    def name(self):
-        return "action_recommendation_system"
-
-    def run(self, dispatcher, tracker, domain):
-        payload = {"intent": "setRecommendationSystem"}
-        recommendation_system = tracker.get_slot("recommendation_system")
-        if recommendation_system is not None:
-            payload.update({"recommendationSystem": recommendation_system})
-        dispatcher.utter_message(requests.post(url, data=payload).text)
-        return [SlotSet("recommendation_system", None)]
 
 
 """  reset conversation state and webhook request for resetting recipes """

@@ -19,6 +19,7 @@
 ## recipe
 * get_recipe
   - action_recipe
+  - slot{"name": null}
   - slot{"ingredient": null}
   - slot{"negative_ingredient": null}
   - slot{"health_label": null}
@@ -27,6 +28,7 @@
   - slot{"time_unit": null}
   - slot{"cuisine": null}
   - slot{"course": null}
+  - slot{"flavor": null}
   - slot{"fallback_flag": "recipe"}
 
 ## different recipe
@@ -38,6 +40,11 @@
 * get_faster_recipe
   - action_faster_recipe
   - slot{"fallback_flag": "recipe"}
+
+## recipe name
+* get_name
+  - action_name
+  - slot{"name": null}
 
 ## recipe ingredient
 * get_ingredient
@@ -119,11 +126,6 @@
 * rate_dish
   - action_rate_dish
   - slot{"rating": null}
-
-## recommendation system
-* set_recommendation_system
-  - action_recommendation_system
-  - slot{"recommendation_system": null}
 
 ## help
 * help

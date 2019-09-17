@@ -4,14 +4,12 @@ const app = express()
 const fs = require("fs")
 const path = require("path")
 
-let recommendationSystem = "content based"
-let contentBasedURL = "http://localhost:3001/dishes/getBy?"
-let collaborativeURL = "http://localhost:1112/dishes/getBy/?"
+let recommendationSystemURL = "http://localhost:3001/dishes/getBy?"
 let currentHeader
 let currentURL
 let currentUserID
 let recipes
-let currentRecipe = JSON.parse(fs.readFileSync(path.join(__dirname, "currentRecipe.json"))) // just for debugging
+let currentRecipe = JSON.parse(fs.readFileSync(path.join(__dirname, "currentRecipe.json")))
 let currentStep = 0
 let phrases = JSON.parse(fs.readFileSync(path.join(__dirname, "/../phrases.json")))
 
@@ -19,41 +17,44 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.post("/recipes",function (req, res, next) {
-    console.log(req.body) // just for debugging
+    console.log(req.body) // debug
     try {
         switch (req.body.intent) {
             case "getRecipe":
-                if (recommendationSystem == "collaborative")
-                    currentURL = collaborativeURL
-                else
-                    currentURL = contentBasedURL
-                if (currentUserID != null) {
+                currentURL = recommendationSystemURL
+                if (currentUserID == null) {
                     currentHeader = {
                         headers: {
-                            user: currentUserID,
-                            recommendation: true
                         }
                     }
-                    currentURL = currentURL.concat(`userID=${currentUserID}`)
                 } else {
-                    currentHeader = {
-                        headers: {}
-                    }
+                        currentHeader = {
+                            headers: {
+                                user: currentUserID,
+                                recommendation: true
+                            }
+                        }
+                    currentURL = currentURL.concat(`userID=${currentUserID}`)
+                }
+                if ("name" in req.body) {
+                    if (currentURL.substr(currentURL.length - 1) != "?")
+                        currentURL = currentURL.concat("&")
+                    currentURL = currentURL.concat(`name=${req.body.name}`)
                 }
                 if ("ingredient" in req.body) {
                     let ingredients = req.body.ingredient
                     if (Array.isArray(ingredients)) {
                         ingredients = [...new Set(ingredients)]
-                        let tmp = ""
+                        let string = ""
                         ingredients.forEach((ing, index, array) => {
                             ingredients = [...new Set(ingredients)]
                             if (index < array.length - 1) {
-                                tmp = tmp.concat(`${ing}%2C`)
+                                string = string.concat(`${ing}%2C`)
                             } else {
-                                tmp = tmp.concat(`${ing}`)
+                                string = string.concat(`${ing}`)
                             }
                         })
-                        ingredients = tmp
+                        ingredients = string
                     }
                     if (currentURL.substr(currentURL.length - 1) != "?")
                         currentURL = currentURL.concat("&")
@@ -63,15 +64,15 @@ app.post("/recipes",function (req, res, next) {
                     let ingredients = req.body.negativeIngredient
                     if (Array.isArray(ingredients)) {
                         ingredients = [...new Set(ingredients)]
-                        let tmp = ""
+                        let string = ""
                         ingredients.forEach((ing, index, array) => {
                             if (index < array.length - 1) {
-                                tmp.concat(`${ing}%2C`)
+                                string.concat(`${ing}%2C`)
                             } else {
-                                tmp.concat(`${ing}`)
+                                string.concat(`${ing}`)
                             }
                         })
-                        ingredients = tmp
+                        ingredients = string
                     }
                     if (currentURL.substr(currentURL.length - 1) != "?")
                         currentURL = currentURL.concat("&")
@@ -81,15 +82,15 @@ app.post("/recipes",function (req, res, next) {
                     let healthLabels = req.body.healthLabel
                     if (Array.isArray(healthLabels)) {
                         healthLabels = [...new Set(healthLabels)]
-                        let tmp = ""
+                        let string = ""
                         healthLabels.forEach((label, index, array) => {
                             if (index < array.length - 1) {
-                                tmp = tmp.concat(`${label}%2C`)
+                                string = string.concat(`${label}%2C`)
                             } else {
-                                tmp = tmp.concat(`${label}`)
+                                string = string.concat(`${label}`)
                             }
                         })
-                        healthLabels = tmp
+                        healthLabels = string
                     }
                     if (currentURL.substr(currentURL.length - 1) != "?")
                         currentURL = currentURL.concat("&")
@@ -99,19 +100,37 @@ app.post("/recipes",function (req, res, next) {
                     let dietLabels = req.body.dietLabel
                     if (Array.isArray(dietLabels)) {
                         dietLabels = [...new Set(dietLabels)]
-                        let tmp = ""
+                        let string = ""
                         dietLabels.forEach((label, index, array) => {
                             if (index < array.length - 1) {
-                                tmp = tmp.concat(`${label}%2C`)
+                                string = string.concat(`${label}%2C`)
                             } else {
-                                tmp = tmp.concat(`${label}`)
+                                string = string.concat(`${label}`)
                             }
                         })
-                        dietLabels = tmp
+                        dietLabels = string
                     }
                     if (currentURL.substr(currentURL.length - 1) != "?")
                         currentURL = currentURL.concat("&")
                     currentURL = currentURL.concat(`dietLabels=${dietLabels}`)
+                }
+                if ("flavor" in req.body) {
+                    let flavors = req.body.flavor
+                    if (Array.isArray(flavors)) {
+                        flavors = [...new Set(flavors)]
+                        let string = ""
+                        flavors.forEach((flavor, index, array) => {
+                            if (index < array.length - 1) {
+                                string = string.concat(`${flavor}%2C`)
+                            } else {
+                                string = string.concat(`${flavor}`)
+                            }
+                        })
+                        flavors = string
+                    }
+                    if (currentURL.substr(currentURL.length - 1) != "?")
+                        currentURL = currentURL.concat("&")
+                    currentURL = currentURL.concat(`allowedFlavors=${flavors}`)
                 }
                 if ("maxTime" in req.body) {
                     let maxTime = req.body.maxTime
@@ -122,16 +141,16 @@ app.post("/recipes",function (req, res, next) {
                     currentURL = currentURL.concat(`maxTime=${maxTime*60}`)
                 }
                 if ("cuisine" in req.body) {
-                    let cuisine = req.body.cuisine
-                    if (currentURL.substr(currentURL.length - 1) != "?") currentURL = currentURL.concat("&")
-                    currentURL = currentURL.concat(`allowedCuisines=${cuisine}`)
+                    if (currentURL.substr(currentURL.length - 1) != "?")
+                        currentURL = currentURL.concat("&")
+                    currentURL = currentURL.concat(`allowedCuisines=${req.body.cuisine}`)
                 }
                 if ("course" in req.body) {
-                    let course = req.body.course
-                    if (currentURL.substr(currentURL.length - 1) != "?") currentURL = currentURL.concat("&")
-                    currentURL = currentURL.concat(`allowedCourses=${course}`)
+                    if (currentURL.substr(currentURL.length - 1) != "?")
+                        currentURL = currentURL.concat("&")
+                    currentURL = currentURL.concat(`allowedCourses=${req.body.course}`)
                 }
-                console.log(currentHeader, currentURL) // just for debugging
+                console.log(currentHeader, currentURL) // debug
                 axios.get(currentURL, currentHeader)
                     .then(response => {
                         recipes = response.data
@@ -152,13 +171,8 @@ app.post("/recipes",function (req, res, next) {
 
                     }).catch (e => {
                         res.send(phrases.connectionError)
-                        console.log(e)
+                        //console.log(e)
                     })
-                break
-            case "getSuggestion":
-                // get dish from recommendation system based on personal preference
-                // not supported yet
-                res.send("TODO")
                 break
             case "getAnotherRecipe":
                 if (recipes == null)
@@ -169,6 +183,7 @@ app.post("/recipes",function (req, res, next) {
                     if (currentRecipe == null)
                         res.send(phrases.anotherRecipeDeny)
                     else {
+                        fs.writeFileSync(path.join(__dirname, "currentRecipe.json"), JSON.stringify(currentRecipe))
                         logRecipe()
                         res.send(phrases.recipeSuggestion1 + currentRecipe.name + phrases.recipeSuggestion2)
                     }
@@ -183,6 +198,7 @@ app.post("/recipes",function (req, res, next) {
                     if (currentRecipe == null)
                         res.send(phrases.fasterRecipeDeny)
                     else {
+                        fs.writeFileSync(path.join(__dirname, "currentRecipe.json"), JSON.stringify(currentRecipe))
                         logRecipe()
                         res.send(phrases.recipeSuggestion1 + currentRecipe.name + phrases.recipeSuggestion2 + " " + phrases.recipeTime1 + Math.round(currentRecipe.time / 60) + phrases.recipeTime2)
                     }
@@ -409,6 +425,12 @@ app.post("/recipes",function (req, res, next) {
                     res.send(responseString)
                 }
                 break
+            case "getName":
+                if (currentRecipe == null)
+                    res.send(phrases.currentRecipeDeny)
+                else
+                    res.send(currentRecipe.name)
+                break
             case "getDescription":
                 if (currentRecipe == null)
                     res.send(phrases.currentRecipeDeny)
@@ -516,6 +538,7 @@ app.post("/recipes",function (req, res, next) {
                     for (index in users) {
                         if (req.body.userID.toLowerCase() == users[index].userID.toLowerCase()) {
                             currentUserID = users[index].userID
+                            logRecipe()
                             responseString = phrases.userAuth1 + users[index].userID + phrases.userAuth2
                         }
                     }
@@ -548,12 +571,9 @@ app.post("/recipes",function (req, res, next) {
                                     rating: req.body.rating
                                     }
                             }
-                            if (recommendationSystem == "collaborative")
-                                currentURL = collaborativeURL
-                            else
-                                currentURL = contentBasedURL
+                            currentURL = recommendationSystemURL
                             currentURL = currentURL.concat(`dishId=${currentRecipe.dishID}`)
-                            console.log(currentHeader, currentURL) // just for debugging
+                            console.log(currentHeader, currentURL) // debug
                             axios.get(currentURL, currentHeader)
                                 .then(response => {
                                     users[userIndex].ratings.push({
@@ -564,7 +584,7 @@ app.post("/recipes",function (req, res, next) {
                                     fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
                                     res.send(phrases.rating1 + currentRecipe.name + phrases.rating2 + req.body.rating + phrases.rating3)
                                 }).catch(e => {
-                                    console.log(e)
+                                    //console.log(e)
                                     res.send(phrases.connectionError)
                                 })
                         } else {
@@ -580,12 +600,9 @@ app.post("/recipes",function (req, res, next) {
                                         rating: req.body.rating
                                         }
                                 }
-                                if (recommendationSystem == "collaborative")
-                                    currentURL = collaborativeURL
-                                else
-                                    currentURL = contentBasedURL
+                                currentURL = recommendationSystemURL
                                 currentURL = currentURL.concat(`dishId=${currentRecipe.dishID}`)
-                                console.log(currentHeader, currentURL) // just for debugging
+                                console.log(currentHeader, currentURL) // debug
                                 axios.get(currentURL, currentHeader)
                                     .then(response => {
                                         users[userIndex].ratings[ratingIndex] = {
@@ -596,7 +613,7 @@ app.post("/recipes",function (req, res, next) {
                                         fs.writeFileSync(path.join(__dirname, "users.json"), JSON.stringify(users))
                                         res.send(phrases.ratingAdjust1 + currentRecipe.name + phrases.ratingAdjust2 + oldRating + phrases.ratingAdjust3 + req.body.rating + phrases.rating3)
                                     }).catch(e => {
-                                        console.log(e)
+                                        //console.log(e)
                                         res.send(phrases.connectionError)
                                     })
                             }
@@ -605,10 +622,6 @@ app.post("/recipes",function (req, res, next) {
                         res.send(phrases.ratingDeny)
                     }
                 }
-                break
-            case "setRecommendationSystem":
-                recommendationSystem = req.body.recommendationSystem
-                res.send(phrases.system1 + recommendationSystem + phrases.system2)
                 break
             case "clear":
                 currentRecipe = null

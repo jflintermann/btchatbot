@@ -1,19 +1,23 @@
 #Startup
+**Start webhook, Rasa Action and Core server**
+```bash
+/start.sh
+```
+**Start webhook, Rasa Action and Core server in shell**
+```bash
+/start.sh shell
+```
 
-1. If changes were made to training data(/Chatbot/data/nlu.md) or stories (/Chatbot/data/stories.md), train model in /Chatbot 
-
-    $rasa train
-
-2. Run Rasa Core server in /Chatbot, for testing purposes use shell
-
-	$rasa run
-
-	$rasa shell
-
-3. Run Rasa Action server in /Chatbot
-
-	$rasa run actions
-
-4. Run Webhook server in /Webhook
-
-	$node webhook.js
+#Training and language
+**Train Rasa**
+```bash
+/update.sh
+```
+**Train Rasa and switch language**
+```bash
+/update.sh *language dir*
+```
+**Save current files into language directory**
+```bash
+/save.sh *language dir*
+```

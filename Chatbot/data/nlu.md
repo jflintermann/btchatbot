@@ -106,6 +106,17 @@
 - what is the cuisine of the dish?
 - tell me the cuisine of this recipe
 
+## intent:get_name
+- what is the name of the dish?
+- what is the recipe called?
+- what's the name?
+- what is it called?
+- tell me the name
+- tell me what it's called
+- give me the name of the recipe
+- give me the name
+- give me the name of the dish
+
 ## intent:get_description
 - describe this dish for me
 - what is the description?
@@ -268,14 +279,14 @@
 - it's time to cook
 - i should eat something
 - i have [60](max_time) [minutes](time_unit) to prepare a dish with [onion](ingredient) and [beans](ingredient)[rice](ingredient)
-- i need a recipe with [beet](ingredient)
+- i need a [salad](name) recipe with [beet](ingredient)
 - i want something with [gobo](ingredient)
 - i need a recipe with [cabbage](ingredient), [onions](ingredient) and [potatoes](ingredient)
 - i want to eat a meal with [carrot](ingredient) and [pepper](ingredient)
 - suggest me a meal with [chicken](ingredient) and [oregano](ingredient) in it
 - i want to cook a dish that has [beef](ingredient), [pasta](ingredient) and [melon](ingredient) in it
 - give me a [german](cuisine) recipe with [corn](ingredient)
-- suggest me something [vegetarian](health_label:VEGETARIAN), [italian](cuisine) with [tomatoes](ingredient)
+- suggest me a [vegetarian](health_label:VEGETARIAN), [italian](cuisine) [pizza](name) with [tomatoes](ingredient)
 - give me a recipe with [turnip](ingredient) but im [vegan](health_label:VEGAN)
 - i need a [indian](cuisine), [gluten free](health_label:GLUTEN_FREE) dish
 - i want to eat something [vegetarian](health_label:VEGETARIAN) with [noodles](ingredient)
@@ -283,7 +294,7 @@
 - suggest me something with [garlic](ingredient) but without [milk](negative_ingredient)
 - suggest me something [sweet](flavor) without [ginger](negative_ingredient)
 - i want to cook something [meaty](flavor), [french](cuisine) and [gluten free](health_label:GLUTEN_FREE) without [tomato](negative_ingredient)
-- i need a recipe without [zucchini](negative_ingredient)
+- i need a [lasagna](name) recipe without [zucchini](negative_ingredient)
 - i want to cook something [sour](flavor)
 - give me a [low carb](diet_label:LOW_CARB) recipe
 - suggest me something [japanese](cuisine)
@@ -388,12 +399,6 @@
 - i don't know what i can do
 - list my options
 - options
-
-## intent:set_recommendation_system
-- switch to [content](recommendation_system)
-- switch to [collaborative](recommendation_system)
-- switch to [content](recommendation_system) based
-- switch to [collaborative](recommendation_system) based
 
 ## synonym:1
 - one
@@ -595,6 +600,9 @@
 - sweetened
 - sugared
 - candied
+
+## lookup:name
+  data/lookup_table/name.txt
 
 ## lookup:ingredient
   data/lookup_table/ingredient.txt
