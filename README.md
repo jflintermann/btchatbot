@@ -1,4 +1,4 @@
-#Startup
+# Startup
 
 **Start webhook, Rasa Action and Core server**
 ```bash
@@ -9,7 +9,7 @@
 /start.sh shell
 ```
 
-#Training and language
+# Training and language
 
 **Train Rasa**
 ```bash
