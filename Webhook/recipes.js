@@ -4,6 +4,7 @@ const app = express()
 const fs = require("fs")
 const path = require("path")
 
+// adjust url
 let recommendationSystemURL = "http://localhost:3001/dishes/getBy?"
 let currentHeader
 let currentURL
@@ -643,11 +644,15 @@ app.post("/recipes",function (req, res, next) {
                 break
             case "checkRating":
                 let users = JSON.parse(fs.readFileSync(path.join(__dirname, "users.json")))
-                let userIndex = users.findIndex(user => user.userID == currentUserID)
-                if (users[userIndex].ratings.find(rating => rating.dishID == currentRecipe.dishID) == null)
+                if (currentUserID != null) {
+                    let userIndex = users.findIndex(user => user.userID == currentUserID)
+                    if (users[userIndex].ratings.find(rating => rating.dishID == currentRecipe.dishID) == null)
+                        res.send("false")
+                    else
+                        res.send("true")
+                } else {
                     res.send("false")
-                else
-                    res.send("true")
+                }
                 break
             default:
                 // may add error message for unknown intent or wrong request body
@@ -683,5 +688,5 @@ function logRecipe() {
     }
 }
 
-app.listen(50001)
-console.log("listening on 50001")
+app.listen(50003)
+console.log("listening on 50003")

@@ -1,18 +1,1 @@
-[
-  {
-    "userID": "bob",
-    "dishLog": [
-      {
-        "dishID": 1219,
-        "time": 1565808213238
-      }
-    ],
-    "ratings": [
-      {
-        "dishID": 1219,
-        "rating": "7",
-        "time": 1567671352910
-      }
-    ]
-  }
-]
+[{"userID":"bob","dishLog":[{"dishID":1219,"time":1565808213238},{"dishID":1219,"time":1568785244047}],"ratings":[{"dishID":1219,"rating":"7","time":1567671352910}]},{"userID":"alice","dishLog":[{"dishID":1219,"time":1568783951456}],"ratings":[]}]

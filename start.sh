@@ -9,13 +9,13 @@ node $mydir/Webhook/recipes.js &
 cd $mydir/Chatbot
 
 #run action server
-rasa run actions &
+rasa run actions -p 50002 &
 
 if [ "$1" = "shell" ]
 then
     #run rasa shell
-    rasa shell
+    rasa shell -p 50001
 else
     #run core server
-    rasa run
+    rasa run -p 50001
 fi

@@ -9,7 +9,7 @@ import os.path
 
 with open(os.path.dirname(__file__) + '/../phrases.json') as phrases_json:
     phrases = json.load(phrases_json)
-url = "http://localhost:50001/recipes"
+url = "http://localhost:50003/recipes"
 
 
 """ get and return the conversation state from flags and webhook """
@@ -428,7 +428,7 @@ class ActionHelp(Action):
             response = phrases["helpNextRecipe"]
         elif state == "first_step":
             response = phrases["helpFirstStep"]
-        elif state == "next step":
+        elif state == "next_step":
             response = phrases["helpNextStep"]
         elif state == "rate_recipe":
             response = phrases["helpRateRecipe"]
@@ -461,7 +461,7 @@ class ActionFallbackQuestion(Action):
             response = phrases["fallbackNextRecipe"]
         elif state == "first_step":
             response = phrases["fallbackFirstStep"]
-        elif state == "next step":
+        elif state == "next_step":
             response = phrases["fallbackNextStep"]
         elif state == "rate_recipe":
             response = phrases["fallbackRateRecipe"]
@@ -481,13 +481,13 @@ class ActionFallback(Action):
         flag = tracker.get_slot("fallback_flag")
         set_flag = flag
         state = get_state(flag)
-        if state == "no_recipe" or "next_recipe":
-            response = requests.post(url, data={"intent": "getSuggestion"}).text
+        if state == "no_recipe" or state == "next_recipe":
+            response = requests.post(url, data={"intent": "getRecipe"}).text
             set_flag = "recipe"
         elif state == "first_step":
             response = requests.post(url, data={"intent": "getStep", "stepCount": 1}).text
             set_flag = "step"
-        elif state == "next step":
+        elif state == "next_step":
             response = requests.post(url, data={"intent": "getNextStep"}).text
             set_flag = "step"
         elif state == "rate_recipe":
